@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1a5f3c07-639c-4b1d-8d67-5eb2b9b6a9fc",
+    "name": "Victor Hugo",
+    "age": 83,
+    "nationality": "Français"
+  },
+  {
+    "id": "3ecf3e3b-8e97-4e24-9e98-8a8d4e90b7be",
+    "name": "J.K. Rowling",
+    "age": 58,
+    "nationality": "Britannique"
+  },
+  {
+    "id": "2baba170-5df0-4c1c-9ba8-77af4d8e4d62",
+    "name": "Gabriel García Márquez",
+    "age": 87,
+    "nationality": "Colombien"
+  },
+  {
+    "id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0",
+    "name": "Haruki Murakami",
+    "age": 75,
+    "nationality": "Japonais"
+  }
+]

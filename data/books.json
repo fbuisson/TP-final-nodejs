@@ -1,0 +1,58 @@
+[
+  {
+    "id": "101",
+    "title": "Les Misérables",
+    "summary": "L'histoire de la rédemption de Jean Valjean, un ancien forçat, dans la France du 19ème siècle.",
+    "genre": "Roman historique",
+    "author_id": "1a5f3c07-639c-4b1d-8d67-5eb2b9b6a9fc"
+  },
+  {
+    "id": "102",
+    "title": "Notre-Dame de Paris",
+    "summary": "Une tragédie centrée sur la cathédrale Notre-Dame de Paris et les personnages qui gravitent autour.",
+    "genre": "Roman gothique",
+    "author_id": "1a5f3c07-639c-4b1d-8d67-5eb2b9b6a9fc"
+  },
+  {
+    "id": "103",
+    "title": "Harry Potter à l'école des sorciers",
+    "summary": "Un jeune garçon découvre qu'il est un sorcier et commence son éducation magique à l'école de Poudlard.",
+    "genre": "Fantasy",
+    "author_id": "3ecf3e3b-8e97-4e24-9e98-8a8d4e90b7be"
+  },
+  {
+    "id": "104",
+    "title": "Harry Potter et la chambre des secrets",
+    "summary": "Harry Potter retourne à Poudlard pour sa deuxième année, où il découvre un sombre secret.",
+    "genre": "Fantasy",
+    "author_id": "3ecf3e3b-8e97-4e24-9e98-8a8d4e90b7be"
+  },
+  {
+    "id": "105",
+    "title": "Cent ans de solitude",
+    "summary": "L'épopée de la famille Buendía sur plusieurs générations dans le village fictif de Macondo.",
+    "genre": "Roman magique réaliste",
+    "author_id": "2baba170-5df0-4c1c-9ba8-77af4d8e4d62"
+  },
+  {
+    "id": "106",
+    "title": "L'amour aux temps du choléra",
+    "summary": "Une histoire d'amour épique qui se déroule sur plusieurs décennies en Amérique du Sud.",
+    "genre": "Roman",
+    "author_id": "2baba170-5df0-4c1c-9ba8-77af4d8e4d62"
+  },
+  {
+    "id": "107",
+    "title": "Kafka sur le rivage",
+    "summary": "Un roman complexe et fantastique qui suit les aventures de deux personnages principaux, Kafka et Nakata.",
+    "genre": "Fiction surréaliste",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
+  },
+  {
+    "id": "108",
+    "title": "La fin des temps",
+    "summary": "Un roman qui explore deux histoires parallèles dans un monde futuriste et dystopique.",
+    "genre": "Science-fiction",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
+  }
+]
