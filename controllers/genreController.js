@@ -1,5 +1,6 @@
-import { genreModel } from "../models";
+import { genreModel } from "../models/index.js";
 import { APIResponse } from "../utils/response.js";
+import crypto from "crypto";
 
 export const getGenres = (request, response) => {
   const genres = genreModel.getAllGenres();
@@ -37,7 +38,7 @@ export const updateGenre = (request, response) => {
   const newGenre = request.body;
   const genre = genreModel.getGenreById(id);
   if (genre) {
-    genreModel.updateGenre(id, new Genre());
+    genreModel.updateGenre(id, newGenre);
     APIResponse(response, post, "Genre updated", 200);
   } else APIResponse(response, null, "Genre not found", 404);
 };

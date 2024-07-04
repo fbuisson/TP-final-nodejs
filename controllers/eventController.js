@@ -1,5 +1,6 @@
-import { eventModel } from "../models";
+import { eventModel } from "../models/index.js";
 import { APIResponse } from "../utils/response.js";
+import crypto from "crypto";
 
 export const getEvents = (request, response) => {
   const events = eventModel.getAllEvents();

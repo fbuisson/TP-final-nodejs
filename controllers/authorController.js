@@ -1,5 +1,6 @@
-import { authorModel } from "../models";
+import { authorModel } from "../models/index.js";
 import { APIResponse } from "../utils/response.js";
+import crypto from "crypto";
 
 export const getAuthors = (request, response) => {
   const authors = authorModel.getAllAuthors();

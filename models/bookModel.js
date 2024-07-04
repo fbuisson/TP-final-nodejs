@@ -34,7 +34,7 @@ export const getBooksByAuthorId = (id) => {
 
 export const getBooksByGenreId = (id) => {
   const books = getAllBooks();
-  return books.filter((book) => book.genres_id.contains(id));
+  return books.filter((book) => book.genres_id.includes(id));
 };
 
 export const addBook = (book) => {

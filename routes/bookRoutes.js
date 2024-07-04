@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { bookController } from "../controllers";
+import { bookController } from "../controllers/index.js";
 
 const router = Router();
 
@@ -8,12 +8,6 @@ router.get("/", bookController.getBooks);
 
 // GET http://localhost:3000/books/:id
 router.get("/:id", bookController.getBook);
-
-// GET http://localhost:3000/books/genre/:id
-router.get("/genre/:id", bookController.getBookListGenre);
-
-// GET http://localhost:3000/books/author/:id
-router.get("/author/:id", bookController.getBookListAuthor);
 
 // POST http://localhost:3000/books
 router.post("/", bookController.createBook);

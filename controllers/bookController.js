@@ -21,7 +21,7 @@ export const getBook = (request, response) => {
 };
 
 // Crée un livre
-export const createBook = () => {
+export const createBook = (request, response) => {
   const newBook = request.body;
   newBook.id = crypto.randomUUID();
   bookModel.addBook(newBook);
@@ -29,7 +29,7 @@ export const createBook = () => {
 };
 
 // Modifie un livre par son ID
-export const updateBook = () => {
+export const updateBook = (request, response) => {
   const { id } = request.params;
   const newBook = request.body;
   const book = bookModel.getBookById(id);
@@ -43,7 +43,7 @@ export const updateBook = () => {
 };
 
 // Efface un livre par son ID
-export const deleteBook = () => {
+export const deleteBook = (request, response) => {
   const { id } = request.params;
   const book = bookModel.getBookById(id);
 
@@ -52,29 +52,5 @@ export const deleteBook = () => {
     APIResponse(response, null, "Book was successfully deleted", 200);
   } else {
     APIResponse(response, null, "Book not found", 404);
-  }
-};
-
-// Affiche une liste de livres en fonction de l'auteur
-export const getBookListAuthor = () => {
-  const { id } = request.params;
-  const books = bookModel.getBooksByAuthorId(id);
-
-  if (books) {
-    APIResponse(response, books, "Author's book list found", 200);
-  } else {
-    APIResponse(response, null, "Book list not found for this author", 404);
-  }
-};
-
-// Affiche une liste de livres en fonction du genre
-export const getBookListGenre = () => {
-  const { id } = request.params;
-  const books = bookModel.getBooksByGenreId(id);
-
-  if (books) {
-    APIResponse(response, books, "Genre's book list found", 200);
-  } else {
-    APIResponse(response, null, "Book list not found for this genre", 404);
   }
 };

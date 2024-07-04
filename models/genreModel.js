@@ -6,7 +6,7 @@ import path from "path";
 
 // on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
 import { fileURLToPath } from "url";
-import { findBooksByGenreId, deleteGenreByGenreId } from "./bookModel";
+import { getBooksByGenreId, deleteGenreByGenreId } from "./bookModel.js";
 
 // contient le chemin absolu du fichier actuel à savoir authorModel.js
 const __filename = fileURLToPath(import.meta.url); // authorModel.js
@@ -15,7 +15,7 @@ const __filename = fileURLToPath(import.meta.url); // authorModel.js
 const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/postModel.js
 
 // On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
-const genreFilePath = path.join(__dirname, "../data/author.json");
+const genreFilePath = path.join(__dirname, "../data/genres.json");
 /// [END]
 
 export const getAllGenres = () => {
@@ -34,7 +34,7 @@ export const getGenreById = (id) => {
 export const addGenre = (genre) => {
   const genres = getAllGenres();
   genres.push(genre);
-  fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+  fs.writeFileSync(genreFilePath, JSON.stringify(genres, null, 2));
 };
 
 export const updateGenre = (id, genre) => {

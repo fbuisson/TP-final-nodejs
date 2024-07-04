@@ -1,4 +1,5 @@
 import express from "express";
+import routes from "./routes/index.js";
 import path from "path";
 
 // J'instancie/j'initialise mon serveur express (dans la variable app)

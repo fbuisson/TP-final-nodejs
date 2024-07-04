@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { eventController } from "../controllers";
+import { eventController } from "../controllers/index.js";
 
 const router = Router();
 
 // GET http://localhost:3000/events
-router.get("/", eventController.getAuthors);
+router.get("/", eventController.getEvents);
 
 // GET http://localhost:3000/events/:id
 router.get("/:id", eventController.getEvent);

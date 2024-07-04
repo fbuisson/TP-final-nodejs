@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url); // authorModel.js
 const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/postModel.js
 
 // On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
-const eventFilePath = path.join(__dirname, "../data/author.json");
+const eventFilePath = path.join(__dirname, "../data/events.json");
 /// [END]
 
 export const getAllEvents = () => {

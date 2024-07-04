@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authorRoutes from "./authorRoute.js";
+import authorRoutes from "./authorRoutes.js";
 import bookRoutes from "./bookRoutes.js";
 import eventRoutes from "./eventRoutes.js";
 import genreRoutes from "./genreRoutes.js";
