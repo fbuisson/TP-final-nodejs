@@ -43,7 +43,7 @@ export const addBook = (book) => {
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const updateBookById = (id, book) => {
+export const updateBook = (id, book) => {
   const books = getAllBooks();
   const index = books.findIndex((book) => book.id === id);
   if (index !== -1) books[index] = book;

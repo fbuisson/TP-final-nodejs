@@ -42,7 +42,7 @@ export const addAuthor = (author) => {
   fs.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
 };
 
-export const updateAuthorById = (id, author) => {
+export const updateAuthor = (id, author) => {
   const authors = getAllAuthors();
   const index = authors.findIndex((a) => a.id === id);
   if (index !== -1) authors[index] = author;

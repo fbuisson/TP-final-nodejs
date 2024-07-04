@@ -37,7 +37,7 @@ export const addGenre = (genre) => {
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const updateGenreById = (id, genre) => {
+export const updateGenre = (id, genre) => {
   const genres = getAllGenres();
   const index = genres.findIndex((g) => g.id === id);
   if (index !== -1) genres[index] = genre;

@@ -33,7 +33,14 @@ export const addEvent = (event) => {
   fs.writeFileSync(eventFilePath, JSON.stringify(events, null, 2));
 };
 
-export const deleteEventById = (id) => {
+export const updateEvent = (id, event) => {
+  const events = getAllEvents();
+  const index = events.findIndex((event) => event.id === id);
+  if (index !== -1) events[index] = event;
+  fs.writeFileSync(eventFilePath, JSON.stringify(events, null, 2));
+};
+
+export const deleteEvent = (id) => {
   const events = getAllEvents();
   const index = events.findIndex((event) => event.id === id);
   if (index !== -1) events.splice(index, 1);
@@ -44,13 +51,6 @@ export const deleteEventsByAuthorId = (authorId) => {
   const events = getAllEvents();
   const filteredEvents = events.filter((event) => event.author_id !== authorId);
   fs.writeFileSync(eventFilePath, JSON.stringify(filteredEvents, null, 2));
-};
-
-export const updateEventById = (id, event) => {
-  const events = getAllEvents();
-  const index = events.findIndex((event) => event.id === id);
-  if (index !== -1) events[index] = event;
-  fs.writeFileSync(eventFilePath, JSON.stringify(events, null, 2));
 };
 
 export const getEventsByAuthorId = (id) => {
