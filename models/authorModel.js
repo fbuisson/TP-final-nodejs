@@ -6,8 +6,8 @@ import path from "path";
 
 // on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
 import { fileURLToPath } from "url";
-import { findBooksByAuthorId } from "./bookModel.js";
-import { deleteBookById } from "./bookModel.js";
+import { getBooksByAuthorId, deleteBooksByAuthorId } from "./bookModel.js";
+import { getEventsByAuthorId, deleteEventsByAuthorId } from "./eventModel.js";
 
 // contient le chemin absolu du fichier actuel à savoir authorModel.js
 const __filename = fileURLToPath(import.meta.url); // authorModel.js
@@ -28,9 +28,10 @@ export const getAuthorById = (id) => {
   const authors = getAllAuthors();
   const author = authors.find((u) => u.id === id);
   if (author) {
-    // On ajoute une propriété 'books' à notre objet author qui corresponds
-    // à tout les books qu'il aura écrit
-    author.books = findBooksByAuthorId(id);
+    // On ajoute des propriété 'books' et 'events' à notre objet author qui corresponds
+    // à tout les books qu'il aura écrit et tous les events
+    author.books = getBooksByAuthorId(id);
+    author.events = getEventsByAuthorId(id);
   }
   return author;
 };
@@ -41,17 +42,19 @@ export const addAuthor = (author) => {
   fs.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
 };
 
+export const updateAuthorById = (id, author) => {
+  const authors = getAllAuthors();
+  const index = authors.findIndex((a) => a.id === id);
+  if (index !== -1) authors[index] = author;
+  fs.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
+};
+
 export const deleteAuthor = (id) => {
   const authors = getAllAuthors();
-  const books = findBooksByAuthorId(id);
 
   const index = authors.findIndex((author) => author.id === id);
   if (index !== -1) authors.splice(index, 1);
+  deleteBooksByAuthorId(id);
+  deleteEventsByAuthorId(id);
   fs.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
-
-  if (books.length) {
-    books.map((book) => {
-      deleteBookById(book.id);
-    });
-  }
 };

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "y5z6a7b8-7890-1234-abcd-ef6789012345",
+    "name": "青空書店 (Aozora Bookstore)",
+    "address": "東京都千代田区神田神保町1丁目1番地 (1-1 Kanda Jinbocho, Chiyoda-ku, Tokyo 101-0051, Japan)",
+    "date": "2025-01-25T00:00:00Z",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
+  },
+  {
+    "id": "q7r8s9t0-5678-9012-abcd-ef4567890123",
+    "name": "Librairie de l'Étoile",
+    "address": "123 Rue de Rivoli, 75001 Paris, France",
+    "date": "2024-12-14T00:00:00Z",
+    "author_id": "3ecf3e3b-8e97-4e24-9e98-8a8d4e90b7be"
+  },
+  {
+    "id": "m3n4o5p6-4567-8901-abcd-ef3456789012",
+    "name": "Novel Ideas",
+    "address": "202 Birch Lane, Seattle, WA 98101",
+    "date": "2024-10-30T00:00:00Z",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
+  },
+  {
+    "id": "a1b2c3d4-1234-5678-9abc-def012345678",
+    "name": "Librería El Buen Lector",
+    "address": "789 Calle Mayor, 28013 Madrid, Spain",
+    "date": "2024-04-24T00:00:00Z",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
+  },
+  {
+    "id": "e5f6g7h8-2345-6789-abcd-ef1234567890",
+    "name": "Buchhandlung Sonnenschein",
+    "address": "456 Friedrichstraße, 10117 Berlin, Germany",
+    "date": "2024-08-01T00:00:00Z",
+    "author_id": "2baba170-5df0-4c1c-9ba8-77af4d8e4d62"
+  }
+]

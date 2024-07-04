@@ -1,0 +1,34 @@
+[
+  {
+    "id": "1",
+    "label": "Drame"
+  },
+  {
+    "id": "2",
+    "label": "Fantasy"
+  },
+  {
+    "id": "3",
+    "label": "Fantastique"
+  },
+  {
+    "id": "4",
+    "label": "Science-fiction"
+  },
+  {
+    "id": "5",
+    "label": "Science-fiction"
+  },
+  {
+    "id": "6",
+    "label": "Réalisme"
+  },
+  {
+    "id": "7",
+    "label": "Amour"
+  },
+  {
+    "id": "8",
+    "label": "Roman"
+  }
+]
