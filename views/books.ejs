@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Liste des livres</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Résumé</th>
+          <th scope="col">Genre</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% books.forEach(book => { %>
+        <tr>
+          <th><%= book.id %></th>
+          <td><%= book.title %></td>
+          <td><%= book.summary %></td>
+          <td>
+            <ul>
+              <% book.genres_id.forEach(genre_id => { %>
+              <li><%= genre_id %></li>
+              <% }); %>
+            </ul>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="2">Nombre de livres</th>
+          <td><%= books.length %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+  <footer>
+    <a href="authors">Authors</a> <a href="events">Events</a>
+    <a href="genres">Genres</a>
+  </footer>
+</html>

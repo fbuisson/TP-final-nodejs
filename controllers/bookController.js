@@ -35,7 +35,7 @@ export const updateBook = (request, response) => {
   const book = bookModel.getBookById(id);
 
   if (book) {
-    bookModel.updateBook(id, book);
+    bookModel.updateBook(id, newBook);
     APIResponse(response, newBook, "Book was successfully modified", 200);
   } else {
     APIResponse(response, null, "Book not found", 404);

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Calendrier des dédicaces auteurs</h1>
+    <table border="1">
+      <thead>
+        <tr>
+          <th scope="col">Librairie</th>
+          <th scope="col">Adresse</th>
+          <th scope="col">Date</th>
+          <th scope="col">Auteur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% events.forEach(event => { %>
+        <tr>
+          <th><%= event.name %></th>
+          <td><%= event.address %></td>
+          <td><%= new Date(event.date).toLocaleString() %></td>
+          <td><%= event.author_id %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+  <footer>
+    <a href="authors">Authors</a> <a href="books">Books</a>
+    <a href="genres">Genres</a>
+  </footer>
+</html>

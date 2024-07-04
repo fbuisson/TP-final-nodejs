@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Liste des auteurs</h1>
+    <table border="1" cellspacing="0" cellpadding="0" align="left" width="1000">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Nom</th>
+          <th scope="col">Âge</th>
+          <th scope="col">Nationalité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% authors.forEach(author => { %>
+        <tr>
+          <th><%= author.id %></th>
+          <td><%= author.name %></td>
+          <td><%= author.age %></td>
+          <td><%= author.nationality %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="3">Nombre d'auteurs</th>
+          <td><%= authors.length %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+  <footer>
+    <a href="books">Books</a> <a href="events">Events</a>
+    <a href="genres">Genres</a>
+  </footer>
+</html>

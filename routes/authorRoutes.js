@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { authorController } from "../controllers/index.js";
+import { validateAuthor } from "../middlewares/validationData.js";
 
 const router = Router();
 
@@ -10,10 +11,10 @@ router.get("/", authorController.getAuthors);
 router.get("/:id", authorController.getAuthor);
 
 // POST http://localhost:3000/authors
-router.post("/", authorController.createAuthor);
+router.post("/", validateAuthor, authorController.createAuthor);
 
 // PUT http://localhost:3000/authors/:id
-router.put("/:id", authorController.updateAuthor);
+router.put("/:id", validateAuthor, authorController.updateAuthor);
 
 // DELETE http://localhost:3000/authors/:id
 router.delete("/:id", authorController.deleteAuthor);

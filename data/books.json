@@ -70,19 +70,17 @@
     "id": "108",
     "title": "La fin des temps",
     "summary": "Un roman qui explore deux histoires parallèles dans un monde futuriste et dystopique.",
-    "genres_id": [
-      "5"
-    ],
+    "genres_id": [],
     "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
   },
   {
-    "title": "Kafka on the shore",
-    "summary": "Comprising two distinct but interrelated plots, the narrative runs back and forth between both plots, taking up each plotline in alternating chapters.",
+    "id": "7e9e3b2f-baa7-4f5e-a922-66ce68434776",
+    "title": "1Q84",
+    "summary": "La trame narrative raconte l'histoire par les points de vue d'Aomamé et Tengo. Dans les deux premiers livres, chaque chapitre est en alternance ce qui arrive à un des deux protagonistes. Dans le troisième tome on voit aussi l'histoire par le regard de Ushikawa.",
     "genres_id": [
       "1",
       "2"
     ],
-    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0",
-    "id": "7e9e3b2f-baa7-4f5e-a922-66ce68434776"
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
   }
 ]

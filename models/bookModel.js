@@ -67,8 +67,10 @@ export const deleteGenreByGenreId = (id) => {
   const books = getAllBooks();
 
   books.forEach((book) => {
-    const index = books.genres_id.findIndex((genre_id) => genre_id === id);
-    if (index !== -1) book.genre_id.splice(index, 1);
+    const index = book.genres_id.findIndex((genre_id) => genre_id === id);
+    if (index !== -1) {
+      book.genres_id.splice(index, 1);
+    }
   });
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
