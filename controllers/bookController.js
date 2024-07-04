@@ -48,7 +48,7 @@ export const deleteBook = () => {
   const book = bookModel.getBookById(id);
 
   if (book) {
-    bookModel.deleteBookById(id);
+    bookModel.deleteBook(id);
     APIResponse(response, null, "Book was successfully deleted", 200);
   } else {
     APIResponse(response, null, "Book not found", 404);

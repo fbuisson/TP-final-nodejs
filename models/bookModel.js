@@ -50,7 +50,7 @@ export const updateBook = (id, book) => {
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const deleteBookById = (id) => {
+export const deleteBook = (id) => {
   const books = getAllBooks();
   const index = books.findIndex((book) => book.id === id);
   if (index !== -1) books.splice(index, 1);

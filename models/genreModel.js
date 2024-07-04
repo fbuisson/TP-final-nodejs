@@ -44,7 +44,7 @@ export const updateGenre = (id, genre) => {
   fs.writeFileSync(genreFilePath, JSON.stringify(genres, null, 2));
 };
 
-export const deleteGenreById = (id) => {
+export const deleteGenre = (id) => {
   let genres = getAllGenres();
   const index = genres.findIndex((g) => g.id === id);
   if (index !== -1) genres.splice(index, 1);
