@@ -82,23 +82,5 @@
       "2"
     ],
     "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0"
-  },
-  {
-    "title": "Livre Test",
-    "summary": "Résumé test.",
-    "genres_id": [
-      "154"
-    ],
-    "author_id": "1a5f3c07-639c-4b1d-8d67-5eb2b9b6a9fc",
-    "id": "bf3b0143-1b06-4d3f-ba25-5f1c9253b7c5"
-  },
-  {
-    "title": "Livre Test 1",
-    "summary": "Résumé test 1.",
-    "genres_id": [
-      "1"
-    ],
-    "author_id": "1a5f3c07-639c-4b1d-8d67-5eb2b9b6a9fc",
-    "id": "5068ed50-0c9b-4840-af9f-c70a5a2cb770"
   }
 ]
