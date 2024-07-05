@@ -14,6 +14,7 @@
           <th scope="col">Nom</th>
           <th scope="col">Âge</th>
           <th scope="col">Nationalité</th>
+          <th scope="col">Détails</th>
         </tr>
       </thead>
       <tbody>
@@ -23,12 +24,13 @@
           <td><%= author.name %></td>
           <td><%= author.age %></td>
           <td><%= author.nationality %></td>
+          <td><a href="authors/<%= author.id %>">Lien</a></td>
         </tr>
         <% }) %>
       </tbody>
       <tfoot>
         <tr>
-          <th scope="row" colspan="3">Nombre d'auteurs</th>
+          <th scope="row" colspan="4">Nombre d'auteurs</th>
           <td><%= authors.length %></td>
         </tr>
       </tfoot>

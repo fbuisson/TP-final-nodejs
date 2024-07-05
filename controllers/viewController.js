@@ -20,6 +20,15 @@ export const viewAuthorsPage = (request, response) => {
   });
 };
 
+export const viewDetailsAuthorPage = (request, response) => {
+  const { id } = request.params;
+  const author = authorModel.getAuthorById(id);
+  response.render("detailsAuthor", {
+    title: "Détails auteur",
+    author: author,
+  });
+};
+
 export const viewBooksPage = (request, response) => {
   const books = bookModel.getAllBooks();
   response.render("books", {

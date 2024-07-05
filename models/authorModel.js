@@ -12,8 +12,8 @@ import { getEventsByAuthorId, deleteEventsByAuthorId } from "./eventModel.js";
 // contient le chemin absolu du fichier actuel à savoir authorModel.js
 const __filename = fileURLToPath(import.meta.url); // authorModel.js
 
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir postModel.js)
-const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/postModel.js
+// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir authorModel.js)
+const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/authorModel.js
 
 // On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
 const authorFilePath = path.join(__dirname, "../data/authors.json");
@@ -29,7 +29,7 @@ export const getAuthorById = (id) => {
   const author = authors.find((u) => u.id === id);
   if (author) {
     // On ajoute des propriété 'books' et 'events' à notre objet author qui corresponds
-    // à tout les books qu'il aura écrit et tous les events
+    // à tout les books qu'il aura écrit et tous les events auxquel il va participer
     author.books = getBooksByAuthorId(id);
     author.events = getEventsByAuthorId(id);
   }

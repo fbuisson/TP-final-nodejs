@@ -8,13 +8,13 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { getBooksByGenreId, deleteGenreByGenreId } from "./bookModel.js";
 
-// contient le chemin absolu du fichier actuel à savoir authorModel.js
-const __filename = fileURLToPath(import.meta.url); // authorModel.js
+// contient le chemin absolu du fichier actuel à savoir genreModel.js
+const __filename = fileURLToPath(import.meta.url); // genreModel.js
 
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir postModel.js)
-const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/postModel.js
+// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir genreModel.js)
+const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/genreModel.js
 
-// On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
+// On récupére le chemin vers notre fichier genre.json où est stockée toute la donnée
 const genreFilePath = path.join(__dirname, "../data/genres.json");
 /// [END]
 

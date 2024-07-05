@@ -9,6 +9,9 @@ router.get("/", viewController.viewHomepage);
 // [VIEW - GET] http://localhost:3000/views/authors
 router.get("/authors", viewController.viewAuthorsPage);
 
+// [VIEW - GET] http://localhost:3000/views/authors/:id
+router.get("/authors/:id", viewController.viewDetailsAuthorPage);
+
 // [VIEW - GET] http://localhost:3000/views/books
 router.get("/books", viewController.viewBooksPage);
 

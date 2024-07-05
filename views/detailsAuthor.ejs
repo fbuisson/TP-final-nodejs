@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Bibliographie de <%= author.name %></h1>
+    <ul>
+      <% author.books.forEach(book => { %>
+      <li><%= book.title %></li>
+      <% }) %>
+    </ul>
+    <h2>Evenements auxquel l'auteur participe :</h2>
+    <ul>
+      <% author.events?.length > 0 && author.events.forEach(event => { %>
+      <li>
+        Bookstore: <%= event.name %> Address: <%= event.address %> Date: <%= new
+        Date(event.date).toLocaleString() %>
+      </li>
+      <% }) %>
+    </ul>
+  </body>
+  <footer>
+    <a href="/views/authors">Back to authors</a>
+  </footer>
+</html>

@@ -7,13 +7,13 @@ import path from "path";
 // on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
 import { fileURLToPath } from "url";
 
-// contient le chemin absolu du fichier actuel à savoir authorModel.js
-const __filename = fileURLToPath(import.meta.url); // authorModel.js
+// contient le chemin absolu du fichier actuel à savoir eventModel.js
+const __filename = fileURLToPath(import.meta.url); // eventModel.js
 
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir postModel.js)
-const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/postModel.js
+// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir eventModel.js)
+const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/eventModel.js
 
-// On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
+// On récupére le chemin vers notre fichier event.json où est stockée toute la donnée
 const eventFilePath = path.join(__dirname, "../data/events.json");
 /// [END]
 
@@ -55,5 +55,5 @@ export const deleteEventsByAuthorId = (authorId) => {
 
 export const getEventsByAuthorId = (id) => {
   const events = getAllEvents();
-  return events.find((event) => event.author_id === id);
+  return events.filter((event) => event.author_id === id);
 };
