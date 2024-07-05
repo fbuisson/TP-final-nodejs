@@ -1,4 +1,4 @@
-import { bookModel } from "../models/index.js";
+import { bookModel, genreModel } from "../models/index.js";
 import { APIResponse } from "../utils/response.js";
 import crypto from "crypto";
 
@@ -23,9 +23,17 @@ export const getBook = (request, response) => {
 // Crée un livre
 export const createBook = (request, response) => {
   const newBook = request.body;
+  let valid = true;
   newBook.id = crypto.randomUUID();
-  bookModel.addBook(newBook);
-  APIResponse(response, newBook, "New book created", 200);
+
+  request.body.genres_id.forEach((id) => {
+    const genre = genreModel.getGenreById(id);
+    if (!genre) valid = false;
+  });
+  if (valid) {
+    bookModel.addBook(newBook);
+    APIResponse(response, newBook, "New book created", 200);
+  } else APIResponse(response, null, "Genre not valid", 404);
 };
 
 // Modifie un livre par son ID
@@ -33,8 +41,14 @@ export const updateBook = (request, response) => {
   const { id } = request.params;
   const newBook = request.body;
   const book = bookModel.getBookById(id);
+  let valid = true;
 
-  if (book) {
+  request.body.genres_id.forEach((id) => {
+    const genre = genreModel.getGenreById(id);
+    if (!genre) valid = false;
+  });
+
+  if (book && valid) {
     bookModel.updateBook(id, newBook);
     APIResponse(response, newBook, "Book was successfully modified", 200);
   } else {

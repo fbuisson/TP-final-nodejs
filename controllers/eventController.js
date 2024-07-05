@@ -1,4 +1,4 @@
-import { eventModel } from "../models/index.js";
+import { eventModel, authorModel } from "../models/index.js";
 import { APIResponse } from "../utils/response.js";
 import crypto from "crypto";
 
@@ -19,9 +19,15 @@ export const getEvent = (request, response) => {
 
 export const createEvent = (request, response) => {
   const newEvent = request.body;
-  newEvent.id = crypto.randomUUID();
-  eventModel.addEvent(newEvent);
-  APIResponse(response, newEvent, "Event created", 201);
+  const authorId = newEvent.author_id;
+
+  if (authorModel.getAuthorById(authorId)) {
+    newEvent.id = crypto.randomUUID();
+    eventModel.addEvent(newEvent);
+    APIResponse(response, newEvent, "Event created", 201);
+  } else {
+    APIResponse(response, null, "Author does not exist", 400);
+  }
 };
 
 export const deleteEvent = (request, response) => {
@@ -36,9 +42,10 @@ export const deleteEvent = (request, response) => {
 export const updateEvent = (request, response) => {
   const id = request.params.id;
   const newEvent = request.body;
+  const author = authorModel.getAuthorById(newEvent.author_id);
   const event = eventModel.getEventById(id);
-  if (event) {
-    eventModel.updateEvent(id, new Event());
+  if (event && author) {
+    eventModel.updateEvent(id, newEvent);
     APIResponse(response, post, "Event updated", 200);
-  } else APIResponse(response, null, "Event not found", 404);
+  } else APIResponse(response, null, "Event or Author not found", 404);
 };

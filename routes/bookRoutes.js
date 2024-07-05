@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { bookController } from "../controllers/index.js";
+import { validateBook } from "../middlewares/validationData.js";
 
 const router = Router();
 
@@ -10,10 +11,10 @@ router.get("/", bookController.getBooks);
 router.get("/:id", bookController.getBook);
 
 // POST http://localhost:3000/books
-router.post("/", bookController.createBook);
+router.post("/", validateBook, bookController.createBook);
 
 // PUT http://localhost:3000/books/:id
-router.put("/:id", bookController.updateBook);
+router.put("/:id", validateBook, bookController.updateBook);
 
 // DELETE http://localhost:3000/books/:id
 router.delete("/:id", bookController.deleteBook);
