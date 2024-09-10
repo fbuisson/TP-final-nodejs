@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { genreController } from "../controllers/index.js";
-import { validateGenre } from "../middlewares/validationData.js";
+import { genreController } from "../controllers/index";
+import { validateGenre } from "../middlewares/validationData";
 
 const router = Router();
 

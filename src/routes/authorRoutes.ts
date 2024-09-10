@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { authorController } from "../controllers/index.js";
-import { validateAuthor } from "../middlewares/validationData.js";
+import { authorController } from "../controllers/index";
+import { validateAuthor } from "../middlewares/validationData";
 
 const router = Router();
 

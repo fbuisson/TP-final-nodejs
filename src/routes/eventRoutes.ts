@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { eventController } from "../controllers/index.js";
-import { validateEvent } from "../middlewares/validationData.js";
+import { eventController } from "../controllers/index";
+import { validateEvent } from "../middlewares/validationData";
 
 const router = Router();
 

@@ -33,5 +33,12 @@
     "address": "456 Friedrichstraße, 10117 Berlin, Germany",
     "date": "2024-08-01T00:00:00Z",
     "author_id": "2baba170-5df0-4c1c-9ba8-77af4d8e4d62"
+  },
+  {
+    "name": "Martinus Bookstore",
+    "address": "Obchodná 516, 811 06 Bratislava, Slovaquie",
+    "date": "2025-02-05T00:00:00Z",
+    "author_id": "5fa4a85e-9f1e-41c2-b1c4-3a3bd1e091e0",
+    "id": "c38aa311-ba20-475d-a6da-0a9275431caf"
   }
 ]
