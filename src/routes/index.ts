@@ -4,6 +4,7 @@ import bookRoutes from "./bookRoutes";
 import eventRoutes from "./eventRoutes";
 import genreRoutes from "./genreRoutes";
 import userRoutes from "./userRoutes";
+import authentificationRoutes from "./authentificationRoutes";
 
 const router = Router();
 
@@ -21,5 +22,8 @@ router.use("/genres", genreRoutes);
 
 // http://localhost:3000/users
 router.use("/users", userRoutes);
+
+// http://localhost:3000/authentification
+router.use("/authentification", authentificationRoutes);
 
 export default router;
