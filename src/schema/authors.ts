@@ -18,23 +18,29 @@ const AuthorSchema = new Schema<IAuthor>(
       required: true,
       trim: true,
     },
-    books: [
-      {
-        type: Types.ObjectId,
-        ref: "Book",
-      },
-    ],
-    events: [
-      {
-        type: Types.ObjectId,
-        ref: "Event",
-      },
-    ],
   },
   {
     timestamps: true,
   }
 );
+
+AuthorSchema.virtual("books", {
+  ref: "Book",
+  localField: "_id",
+  foreignField: "author_id",
+  justOne: false
+});
+
+AuthorSchema.virtual("events", {
+  ref: "Event",
+  localField: "_id",
+  foreignField: "author_id",
+  justOne: false
+});
+
+AuthorSchema.set("toObject", { virtuals: true });
+AuthorSchema.set("toJSON", { virtuals: true });
+
 
 const Author = model<IAuthor>("Author", AuthorSchema);
 

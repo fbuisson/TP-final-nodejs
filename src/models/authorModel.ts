@@ -19,6 +19,7 @@ export const getAuthorById = async (id: Types.ObjectId) => {
       .populate("books")
       .populate("events");
 
+    console.log(author);
     return author;
   } catch (err) {
     console.error(err);
