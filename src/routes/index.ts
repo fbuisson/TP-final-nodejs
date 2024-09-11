@@ -1,9 +1,9 @@
 import { Router } from "express";
-import authorRoutes from "./authorRoutes.js";
-import bookRoutes from "./bookRoutes.js";
-import eventRoutes from "./eventRoutes.js";
-import genreRoutes from "./genreRoutes.js";
-import viewRoutes from "./viewRoutes.js";
+import authorRoutes from "./authorRoutes";
+import bookRoutes from "./bookRoutes";
+import eventRoutes from "./eventRoutes";
+import genreRoutes from "./genreRoutes";
+import viewRoutes from "./viewRoutes";
 
 const router = Router();
 

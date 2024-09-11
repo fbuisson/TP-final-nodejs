@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const index_js_1 = __importDefault(require("./routes/index.js"));
+const index_1 = __importDefault(require("./routes/index"));
 const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const database_1 = require("./config/database");
@@ -25,7 +25,7 @@ app.use(express_1.default.urlencoded({ extended: true })); // lire le body lorsq
 app.set("view engine", "ejs"); // Configurer Express pour utiliser EJS comme moteur de vue (views)
 app.set("views", path_1.default.join(process.cwd(), "views")); // Définir le répertoire où sont stockés les fichiers de vues (views)
 // J'utilise le router défini dans routes/index.js pour gérer les routes de mon application de façon globale
-app.use(index_js_1.default);
+app.use(index_1.default);
 // Definit une route pour les requêtes de la méthode GET sur l'url /
 // [GET] http://localhost:3000/
 app.get("/", (req, res) => {
