@@ -1,56 +1,67 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGenre = exports.updateGenre = exports.addGenre = exports.getGenreById = exports.getAllGenres = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-//// [START]
-// En raison de la version ES de Node
-// on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
-const url_1 = require("url");
-const bookModel_js_1 = require("./bookModel.js");
-// contient le chemin absolu du fichier actuel à savoir genreModel.js
-const __filename = (0, url_1.fileURLToPath)(import.meta.url); // genreModel.js
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir genreModel.js)
-const __dirname = path_1.default.dirname(__filename); // J02/express/models ..... J02/express/models/genreModel.js
-// On récupére le chemin vers notre fichier genre.json où est stockée toute la donnée
-const genreFilePath = path_1.default.join(__dirname, "../data/genres.json");
-/// [END]
+const genres_1 = __importDefault(require("../schema/genres"));
 const getAllGenres = () => {
-    const data = fs_1.default.readFileSync(genreFilePath, "utf-8");
-    return JSON.parse(data);
+    try {
+        return genres_1.default.find().exec();
+    }
+    catch (err) {
+        console.error(err);
+        return [];
+    }
 };
 exports.getAllGenres = getAllGenres;
-const getGenreById = (id) => {
-    const genres = (0, exports.getAllGenres)();
-    const genre = genres.find((g) => g.id === id);
-    if (genre)
-        genre.books = (0, bookModel_js_1.getBooksByGenreId)(id);
-    return genre;
-};
+const getGenreById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const genre = yield genres_1.default.findById(id).exec();
+        return genre;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.getGenreById = getGenreById;
-const addGenre = (genre) => {
-    const genres = (0, exports.getAllGenres)();
-    genres.push(genre);
-    fs_1.default.writeFileSync(genreFilePath, JSON.stringify(genres, null, 2));
-};
+const addGenre = (genre) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return genres_1.default.create(genre);
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.addGenre = addGenre;
 const updateGenre = (id, genre) => {
-    const genres = (0, exports.getAllGenres)();
-    const index = genres.findIndex((g) => g.id === id);
-    if (index !== -1)
-        genres[index] = genre;
-    fs_1.default.writeFileSync(genreFilePath, JSON.stringify(genres, null, 2));
+    try {
+        return genres_1.default.updateOne({ _id: id }, genre).exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
 };
 exports.updateGenre = updateGenre;
 const deleteGenre = (id) => {
-    let genres = (0, exports.getAllGenres)();
-    const index = genres.findIndex((g) => g.id === id);
-    if (index !== -1)
-        genres.splice(index, 1);
-    (0, bookModel_js_1.deleteGenreByGenreId)(id);
-    fs_1.default.writeFileSync(genreFilePath, JSON.stringify(genres, null, 2));
+    try {
+        return genres_1.default.deleteOne(id).exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
 };
 exports.deleteGenre = deleteGenre;

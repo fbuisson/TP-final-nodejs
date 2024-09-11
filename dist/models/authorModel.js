@@ -1,62 +1,79 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAuthor = exports.updateAuthor = exports.addAuthor = exports.getAuthorById = exports.getAllAuthors = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-//// [START]
-// En raison de la version ES de Node
-// on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
-const url_1 = require("url");
-const bookModel_js_1 = require("./bookModel.js");
-const eventModel_js_1 = require("./eventModel.js");
-// contient le chemin absolu du fichier actuel à savoir authorModel.js
-const __filename = (0, url_1.fileURLToPath)(import.meta.url); // authorModel.js
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir authorModel.js)
-const __dirname = path_1.default.dirname(__filename); // J02/express/models ..... J02/express/models/authorModel.js
-// On récupére le chemin vers notre fichier author.json où est stockée toute la donnée
-const authorFilePath = path_1.default.join(__dirname, "../data/authors.json");
-/// [END]
-const getAllAuthors = () => {
-    const data = fs_1.default.readFileSync(authorFilePath, "utf-8");
-    return JSON.parse(data);
-};
-exports.getAllAuthors = getAllAuthors;
-const getAuthorById = (id) => {
-    const authors = (0, exports.getAllAuthors)();
-    const author = authors.find((u) => u.id === id);
-    if (author) {
-        // On ajoute des propriété 'books' et 'events' à notre objet author qui corresponds
-        // à tout les books qu'il aura écrit et tous les events auxquel il va participer
-        author.books = (0, bookModel_js_1.getBooksByAuthorId)(id);
-        author.events = (0, eventModel_js_1.getEventsByAuthorId)(id);
+const authors_1 = __importDefault(require("../schema/authors"));
+const getAllAuthors = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield authors_1.default.find().exec();
     }
-    return author;
-};
+    catch (err) {
+        console.error(err);
+        return [];
+    }
+});
+exports.getAllAuthors = getAllAuthors;
+const getAuthorById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const author = yield authors_1.default.findById(id)
+            .populate("books")
+            .populate("events");
+        return author;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.getAuthorById = getAuthorById;
-const addAuthor = (author) => {
-    const authors = (0, exports.getAllAuthors)();
-    authors.push(author);
-    fs_1.default.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
-};
+const addAuthor = (author) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield authors_1.default.create(author);
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.addAuthor = addAuthor;
-const updateAuthor = (id, author) => {
-    const authors = (0, exports.getAllAuthors)();
-    const index = authors.findIndex((a) => a.id === id);
-    if (index !== -1)
-        authors[index] = author;
-    fs_1.default.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
-};
+const updateAuthor = (id, author) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const updatedAuthor = yield authors_1.default.findByIdAndUpdate(id, author, {
+            new: true,
+        });
+        if (!updatedAuthor) {
+            console.error(`Author with ID ${id} not found`);
+        }
+        return exports.updateAuthor;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.updateAuthor = updateAuthor;
-const deleteAuthor = (id) => {
-    const authors = (0, exports.getAllAuthors)();
-    const index = authors.findIndex((author) => author.id === id);
-    if (index !== -1)
-        authors.splice(index, 1);
-    (0, bookModel_js_1.deleteBooksByAuthorId)(id);
-    (0, eventModel_js_1.deleteEventsByAuthorId)(id);
-    fs_1.default.writeFileSync(authorFilePath, JSON.stringify(authors, null, 2));
-};
+const deleteAuthor = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const deletedAuthor = yield authors_1.default.findByIdAndDelete(id);
+        if (!exports.deleteAuthor) {
+            console.error(`Author with ID ${id} not found`);
+        }
+        return deletedAuthor;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.deleteAuthor = deleteAuthor;

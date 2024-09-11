@@ -1,51 +1,87 @@
-import { eventModel, authorModel } from "../models/index.js";
-import { APIResponse } from "../utils/response.js";
-import crypto from "crypto";
+import { Request, Response } from "express";
+import { eventModel, authorModel } from "../models";
+import { APIResponse } from "../utils/response";
+import { Types } from "mongoose";
 
-export const getEvents = (request, response) => {
-  const events = eventModel.getAllEvents();
-  APIResponse(response, events, "List of all events");
+export const getEvents = async (request: Request, response: Response) => {
+  try {
+    const events = await eventModel.getAllEvents();
+    APIResponse(response, events, "List of all events");
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error fetching events", 500);
+  }
 };
 
-export const getEvent = (request, response) => {
+export const getEvent = async (request: Request, response: Response) => {
   const { id } = request.params;
-  const event = eventModel.getEventById(id);
-  if (event) {
-    APIResponse(response, event, "Event found");
-  } else {
-    APIResponse(response, null, "Event not found", 404);
+  try {
+    const event = await eventModel.getEventById(new Types.ObjectId(id));
+    if (event) {
+      APIResponse(response, event, "Event found");
+    } else {
+      APIResponse(response, null, "Event not found", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error fetching event", 500);
   }
 };
 
-export const createEvent = (request, response) => {
+export const createEvent = async (request: Request, response: Response) => {
   const newEvent = request.body;
-  const authorId = newEvent.author_id;
+  const authorId = new Types.ObjectId(newEvent.author_id as string);
 
-  if (authorModel.getAuthorById(authorId)) {
-    newEvent.id = crypto.randomUUID();
-    eventModel.addEvent(newEvent);
-    APIResponse(response, newEvent, "Event created", 201);
-  } else {
-    APIResponse(response, null, "Author does not exist", 400);
+  try {
+    const author = await authorModel.getAuthorById(authorId);
+    if (author) {
+      const createdEvent = await eventModel.addEvent(newEvent);
+      APIResponse(response, createdEvent, "Event created", 201);
+    } else {
+      APIResponse(response, null, "Author does not exist", 400);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error creating event", 500);
   }
 };
 
-export const deleteEvent = (request, response) => {
-  const id = request.params.id;
-  const event = eventModel.getEventById(id);
-  if (event) {
-    eventModel.deleteEvent(id);
-    APIResponse(response, null, "Event deleted", 204);
-  } else APIResponse(response, null, "Event not found", 404);
+export const deleteEvent = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  try {
+    const event = await eventModel.getEventById(new Types.ObjectId(id));
+    if (event) {
+      await eventModel.deleteEvent(new Types.ObjectId(id));
+      APIResponse(response, null, "Event deleted", 204);
+    } else {
+      APIResponse(response, null, "Event not found", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error deleting event", 500);
+  }
 };
 
-export const updateEvent = (request, response) => {
-  const id = request.params.id;
+export const updateEvent = async (request: Request, response: Response) => {
+  const { id } = request.params;
   const newEvent = request.body;
-  const author = authorModel.getAuthorById(newEvent.author_id);
-  const event = eventModel.getEventById(id);
-  if (event && author) {
-    eventModel.updateEvent(id, newEvent);
-    APIResponse(response, post, "Event updated", 200);
-  } else APIResponse(response, null, "Event or Author not found", 404);
+  try {
+    const event = await eventModel.getEventById(new Types.ObjectId(id));
+    const author = await authorModel.getAuthorById(
+      new Types.ObjectId(newEvent.author_id as string)
+    );
+
+    if (event && author) {
+      const updatedEvent = await eventModel.updateEvent(
+        new Types.ObjectId(id),
+        newEvent
+      );
+      APIResponse(response, updatedEvent, "Event updated", 200);
+    } else {
+      APIResponse(response, null, "Event or Author not found", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error updating event", 500);
+  }
 };

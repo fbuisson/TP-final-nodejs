@@ -1,78 +1,122 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteGenreByGenreId = exports.deleteBooksByAuthorId = exports.deleteBook = exports.updateBook = exports.addBook = exports.getBooksByGenreId = exports.getBooksByAuthorId = exports.getBookById = exports.getAllBooks = void 0;
-const fs_1 = __importDefault(require("fs"));
-const path_1 = __importDefault(require("path"));
-//// [START]
-// En raison de la version ES de Node
-// on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
-const url_1 = require("url");
-// contient le chemin absolu du fichier actuel à savoir bookModel.js
-const __filename = (0, url_1.fileURLToPath)(import.meta.url); // bookModel.js
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir bookModel.js)
-const __dirname = path_1.default.dirname(__filename); // J02/express/models ..... J02/express/models/bookModel.js
-// On récupére le chemin vers notre fichier comments.json où est stockée toute la donnée
-const bookFilePath = path_1.default.join(__dirname, "../data/books.json");
-/// [END]
-const getAllBooks = () => {
-    const data = fs_1.default.readFileSync(bookFilePath, "utf-8");
-    return JSON.parse(data);
-};
+const books_1 = __importDefault(require("../schema/books"));
+const getAllBooks = () => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield books_1.default.find().exec();
+    }
+    catch (err) {
+        console.error(err);
+        return [];
+    }
+});
 exports.getAllBooks = getAllBooks;
-const getBookById = (id) => {
-    const books = (0, exports.getAllBooks)();
-    return books.find((b) => b.id === id);
-};
+const getBookById = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const book = yield books_1.default.findById(id).exec();
+        return book;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.getBookById = getBookById;
-const getBooksByAuthorId = (id) => {
-    const books = (0, exports.getAllBooks)();
-    return books.filter((book) => book.author_id === id);
-};
+const getBooksByAuthorId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield books_1.default.find({ author_id: id })
+            .populate({
+            path: "author_id",
+            select: "name",
+        })
+            .exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.getBooksByAuthorId = getBooksByAuthorId;
-const getBooksByGenreId = (id) => {
-    const books = (0, exports.getAllBooks)();
-    return books.filter((book) => book.genres_id.includes(id));
-};
+const getBooksByGenreId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield books_1.default.find({ genres_id: id })
+            .populate({
+            path: "genres_id",
+            select: "label",
+        })
+            .exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.getBooksByGenreId = getBooksByGenreId;
-const addBook = (book) => {
-    const books = (0, exports.getAllBooks)();
-    books.push(book);
-    fs_1.default.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
-};
+const addBook = (book) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        return yield books_1.default.create(book);
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.addBook = addBook;
-const updateBook = (id, book) => {
-    const books = (0, exports.getAllBooks)();
-    const index = books.findIndex((book) => book.id === id);
-    if (index !== -1)
-        books[index] = book;
-    fs_1.default.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
-};
+const updateBook = (id, book) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const updatedBook = yield books_1.default.findByIdAndUpdate(id, book, { new: true });
+        if (!updatedBook) {
+            console.error(`Book with ID ${id} not found`);
+        }
+        return updatedBook;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.updateBook = updateBook;
 const deleteBook = (id) => {
-    const books = (0, exports.getAllBooks)();
-    const index = books.findIndex((book) => book.id === id);
-    if (index !== -1)
-        books.splice(index, 1);
-    fs_1.default.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+    try {
+        return books_1.default.deleteOne({ _id: id }).exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
 };
 exports.deleteBook = deleteBook;
 const deleteBooksByAuthorId = (authorId) => {
-    const books = (0, exports.getAllBooks)();
-    const filteredBooks = books.filter((book) => book.author_id !== authorId);
-    fs_1.default.writeFileSync(bookFilePath, JSON.stringify(filteredBooks, null, 2));
+    try {
+        return books_1.default.deleteOne({ author_id: authorId }).exec();
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
 };
 exports.deleteBooksByAuthorId = deleteBooksByAuthorId;
-const deleteGenreByGenreId = (id) => {
-    const books = (0, exports.getAllBooks)();
-    books.forEach((book) => {
-        const index = book.genres_id.findIndex((genre_id) => genre_id === id);
-        if (index !== -1) {
-            book.genres_id.splice(index, 1);
-        }
-    });
-    fs_1.default.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
-};
+const deleteGenreByGenreId = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield books_1.default.updateMany({ genres_id: id }, { $pull: { genres_id: id } }).exec();
+        return result;
+    }
+    catch (err) {
+        console.error(err);
+        return null;
+    }
+});
 exports.deleteGenreByGenreId = deleteGenreByGenreId;

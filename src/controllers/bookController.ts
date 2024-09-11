@@ -1,70 +1,94 @@
-import { bookModel, genreModel } from "../models/index.js";
-import { APIResponse } from "../utils/response.js";
-import crypto from "crypto";
+import { Request, Response } from "express";
+import { bookModel, genreModel } from "../models";
+import { APIResponse } from "../utils/response";
+import { Types } from "mongoose";
 
-// Affiche tous les livres
-export const getBooks = (request, response) => {
-  const books = bookModel.getAllBooks();
-  APIResponse(response, books, "All books", 200);
-};
-
-// Affiche un livre en fonction de son ID
-export const getBook = (request, response) => {
-  const { id } = request.params;
-  const book = bookModel.getBookById(id);
-
-  if (book) {
-    APIResponse(response, book, "Book found", 200);
-  } else {
-    APIResponse(response, null, "Book not found", 404);
+export const getBooks = async (request: Request, response: Response) => {
+  try {
+    const books = await bookModel.getAllBooks();
+    APIResponse(response, books, "List of all books", 200);
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error fetching books", 500);
   }
 };
 
-// Crée un livre
-export const createBook = (request, response) => {
-  const newBook = request.body;
-  let valid = true;
-  newBook.id = crypto.randomUUID();
-
-  request.body.genres_id.forEach((id) => {
-    const genre = genreModel.getGenreById(id);
-    if (!genre) valid = false;
-  });
-  if (valid) {
-    bookModel.addBook(newBook);
-    APIResponse(response, newBook, "New book created", 200);
-  } else APIResponse(response, null, "Genre not valid", 404);
-};
-
-// Modifie un livre par son ID
-export const updateBook = (request, response) => {
+export const getBook = async (request: Request, response: Response) => {
   const { id } = request.params;
-  const newBook = request.body;
-  const book = bookModel.getBookById(id);
-  let valid = true;
-
-  request.body.genres_id.forEach((id) => {
-    const genre = genreModel.getGenreById(id);
-    if (!genre) valid = false;
-  });
-
-  if (book && valid) {
-    bookModel.updateBook(id, newBook);
-    APIResponse(response, newBook, "Book was successfully modified", 200);
-  } else {
-    APIResponse(response, null, "Book not found", 404);
+  try {
+    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    if (book) {
+      APIResponse(response, book, "Book found", 200);
+    } else {
+      APIResponse(response, null, "Book not found", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error fetching book", 500);
   }
 };
 
-// Efface un livre par son ID
-export const deleteBook = (request, response) => {
-  const { id } = request.params;
-  const book = bookModel.getBookById(id);
+export const createBook = async (request: Request, response: Response) => {
+  try {
+    const newBook = request.body;
+    let valid = true;
 
-  if (book) {
-    bookModel.deleteBook(id);
-    APIResponse(response, null, "Book was successfully deleted", 200);
-  } else {
-    APIResponse(response, null, "Book not found", 404);
+    for (const genreId of newBook.genres_id) {
+      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId));
+      if (!genre) valid = false;
+    }
+
+    if (valid) {
+      const createdBook = await bookModel.addBook(newBook);
+      APIResponse(response, createdBook, "New book created", 201);
+    } else {
+      APIResponse(response, null, "Genre not valid", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error creating book", 500);
+  }
+};
+
+export const updateBook = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  const newBook = request.body;
+  try {
+    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    let valid = true;
+
+    for (const genreId of newBook.genres_id) {
+      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId));
+      if (!genre) valid = false;
+    }
+
+    if (book && valid) {
+      const updatedBook = await bookModel.updateBook(
+        new Types.ObjectId(id),
+        newBook
+      );
+      APIResponse(response, updatedBook, "Book was successfully modified", 200);
+    } else {
+      APIResponse(response, null, "Book not found or invalid genre", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error updating book", 500);
+  }
+};
+
+export const deleteBook = async (request: Request, response: Response) => {
+  const { id } = request.params;
+  try {
+    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    if (book) {
+      await bookModel.deleteBook(new Types.ObjectId(id));
+      APIResponse(response, null, "Book was successfully deleted", 204);
+    } else {
+      APIResponse(response, null, "Book not found", 404);
+    }
+  } catch (err) {
+    console.error(err);
+    APIResponse(response, null, "Error deleting book", 500);
   }
 };

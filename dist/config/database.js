@@ -13,6 +13,7 @@ exports.connectDB = void 0;
 const mongoose_1 = require("mongoose");
 const env_1 = require("./env");
 const { MONGO_URI } = env_1.env;
+console.log("### L'URL :", MONGO_URI);
 const connectDB = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const c = yield (0, mongoose_1.connect)(MONGO_URI);

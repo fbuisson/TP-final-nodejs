@@ -30,5 +30,5 @@ const authorModel = __importStar(require("./authorModel"));
 exports.authorModel = authorModel;
 const eventModel = __importStar(require("./eventModel"));
 exports.eventModel = eventModel;
-const genreModel = __importStar(require("./genreModel.js"));
+const genreModel = __importStar(require("./genreModel"));
 exports.genreModel = genreModel;

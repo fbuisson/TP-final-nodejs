@@ -3,6 +3,8 @@ import { env } from "./env";
 
 const { MONGO_URI } = env;
 
+console.log("### L'URL :", MONGO_URI);
+
 export const connectDB = async () => {
   try {
     const c = await connect(MONGO_URI);
