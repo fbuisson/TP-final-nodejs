@@ -1,22 +1,29 @@
 import { Router } from "express";
-import { bookController } from "../controllers/index";
-import { validateBook } from "../middlewares/validationData";
+import {
+  getBooks,
+  getBook,
+  createBook,
+  updateBook,
+  deleteBook,
+} from "../controllers";
+import { validateBook } from "../middlewares/validationMiddleware";
+import { authMiddleware } from "../middlewares/authentificationMiddleware";
 
 const router = Router();
 
 // GET http://localhost:3000/books
-router.get("/", bookController.getBooks);
+router.get("/", getBooks);
 
 // GET http://localhost:3000/books/:id
-router.get("/:id", bookController.getBook);
+router.get("/:id", getBook);
 
 // POST http://localhost:3000/books
-router.post("/", validateBook, bookController.createBook);
+router.post("/", authMiddleware, validateBook, createBook);
 
 // PUT http://localhost:3000/books/:id
-router.put("/:id", validateBook, bookController.updateBook);
+router.put("/:id", authMiddleware, validateBook, updateBook);
 
 // DELETE http://localhost:3000/books/:id
-router.delete("/:id", bookController.deleteBook);
+router.delete("/:id", authMiddleware, deleteBook);
 
 export default router;

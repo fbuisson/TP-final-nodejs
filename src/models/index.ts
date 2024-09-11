@@ -1,6 +1,5 @@
-import * as bookModel from "./bookModel";
-import * as authorModel from "./authorModel";
-import * as eventModel from "./eventModel";
-import * as genreModel from "./genreModel";
-
-export { bookModel, authorModel, eventModel, genreModel };
+export * as bookModel from "./bookModel";
+export * as authorModel from "./authorModel";
+export * as eventModel from "./eventModel";
+export * as genreModel from "./genreModel";
+export * from "./userModel";

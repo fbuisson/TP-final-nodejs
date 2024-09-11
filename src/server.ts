@@ -4,12 +4,14 @@ import path from "path";
 import cors from "cors";
 import { connectDB } from "./config/database";
 import { env } from "./config/env";
+import cookieParser from "cookie-parser";
 
 // Je définis mon port (3000)
 const { PORT, ORIGIN } = env;
 
 // J'instancie/j'initialise mon serveur express (dans la variable app)
 const app = express();
+app.use(cookieParser());
 
 app.use(
   cors({

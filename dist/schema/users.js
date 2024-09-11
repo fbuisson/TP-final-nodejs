@@ -22,13 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.genreModel = exports.eventModel = exports.authorModel = exports.bookModel = void 0;
-exports.bookModel = __importStar(require("./bookModel"));
-exports.authorModel = __importStar(require("./authorModel"));
-exports.eventModel = __importStar(require("./eventModel"));
-exports.genreModel = __importStar(require("./genreModel"));
-__exportStar(require("./userModel"), exports);
+const mongoose_1 = __importStar(require("mongoose"));
+// Définition du schéma mongoose pour l'entité User
+// définit la structure des données + options de validations
+const userSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, select: false },
+});
+// Création du modèle User basé sur le schéma userSchema
+// model utilisé pour CRUD les documents de la collection 'users' de mongodb
+exports.default = mongoose_1.default.model("User", userSchema);

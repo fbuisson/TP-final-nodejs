@@ -1,22 +1,29 @@
 import { Router } from "express";
-import { authorController } from "../controllers/index";
-import { validateAuthor } from "../middlewares/validationData";
+import {
+  getAuthors,
+  getAuthor,
+  createAuthor,
+  updateAuthor,
+  deleteAuthor,
+} from "../controllers";
+import { validateAuthor } from "../middlewares/validationMiddleware";
+import { authMiddleware } from "../middlewares/authentificationMiddleware";
 
 const router = Router();
 
 // GET http://localhost:3000/authors
-router.get("/", authorController.getAuthors);
+router.get("/", getAuthors);
 
 // GET http://localhost:3000/authors/:id
-router.get("/:id", authorController.getAuthor);
+router.get("/:id", getAuthor);
 
 // POST http://localhost:3000/authors
-router.post("/", validateAuthor, authorController.createAuthor);
+router.post("/", authMiddleware, validateAuthor, createAuthor);
 
 // PUT http://localhost:3000/authors/:id
-router.put("/:id", validateAuthor, authorController.updateAuthor);
+router.put("/:id", authMiddleware, validateAuthor, updateAuthor);
 
 // DELETE http://localhost:3000/authors/:id
-router.delete("/:id", authorController.deleteAuthor);
+router.delete("/:id", authMiddleware, deleteAuthor);
 
 export default router;

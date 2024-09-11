@@ -3,7 +3,7 @@ import authorRoutes from "./authorRoutes";
 import bookRoutes from "./bookRoutes";
 import eventRoutes from "./eventRoutes";
 import genreRoutes from "./genreRoutes";
-// import viewRoutes from "./viewRoutes";
+import userRoutes from "./userRoutes";
 
 const router = Router();
 
@@ -19,7 +19,7 @@ router.use("/events", eventRoutes);
 // http://localhost:3000/genres
 router.use("/genres", genreRoutes);
 
-// // http://localhost:3000/views
-// router.use("/views", viewRoutes);
+// http://localhost:3000/users
+router.use("/users", userRoutes);
 
 export default router;

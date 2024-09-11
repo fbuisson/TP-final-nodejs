@@ -1,17 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const index_1 = require("../controllers/index");
-const validationData_1 = require("../middlewares/validationData");
+const controllers_1 = require("../controllers");
+const validationMiddleware_1 = require("../middlewares/validationMiddleware");
+const authentificationMiddleware_1 = require("../middlewares/authentificationMiddleware");
 const router = (0, express_1.Router)();
 // GET http://localhost:3000/genres
-router.get("/", index_1.genreController.getGenres);
+router.get("/", controllers_1.getGenres);
 // GET http://localhost:3000/genres/:id
-router.get("/:id", index_1.genreController.getGenre);
+router.get("/:id", controllers_1.getGenre);
 // POST http://localhost:3000/genres
-router.post("/", validationData_1.validateGenre, index_1.genreController.createGenre);
+router.post("/", authentificationMiddleware_1.authMiddleware, validationMiddleware_1.validateGenre, controllers_1.createGenre);
 // PUT http://localhost:3000/genres/:id
-router.put("/:id", validationData_1.validateGenre, index_1.genreController.updateGenre);
+router.put("/:id", authentificationMiddleware_1.authMiddleware, validationMiddleware_1.validateGenre, controllers_1.updateGenre);
 // DELETE http://localhost:3000/genres/:id
-router.delete("/:id", index_1.genreController.deleteGenre);
+router.delete("/:id", authentificationMiddleware_1.authMiddleware, controllers_1.deleteGenre);
 exports.default = router;

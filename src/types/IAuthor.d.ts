@@ -1,6 +1,6 @@
 import { Document, Types } from "mongoose";
 
-export interface IAuthor {
+export interface IAuthor extends Document {
   id: Types.ObjectId;
   name: string;
   age: number;

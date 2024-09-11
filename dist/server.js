@@ -9,10 +9,12 @@ const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const database_1 = require("./config/database");
 const env_1 = require("./config/env");
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 // Je définis mon port (3000)
 const { PORT, ORIGIN } = env_1.env;
 // J'instancie/j'initialise mon serveur express (dans la variable app)
 const app = (0, express_1.default)();
+app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)({
     origin: ORIGIN, // Autoriser uniquement cette adresse à requeter sur le serveur
     methods: ["GET", "PUT", "POST", "DELETE", "PATCH"], // methodes http autorisées

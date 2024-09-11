@@ -1,7 +1,7 @@
 import { Document, Types } from "mongoose";
 import { IAuthor } from "./IAuthor";
 
-export interface IEvent {
+export interface IEvent extends Document {
   id: Types.ObjectId;
   name: string;
   address: string;

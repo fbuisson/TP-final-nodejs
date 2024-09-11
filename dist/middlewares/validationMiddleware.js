@@ -1,0 +1,92 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.validateEvent = exports.validateGenre = exports.validateBook = exports.validateAuthor = void 0;
+const response_1 = require("../utils/response");
+const validateAuthor = (req, res, next) => {
+    const { name, age, nationality } = req.body;
+    let errors = [];
+    if (typeof name !== "string" || name.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Name must be a non-empty string", 400);
+    }
+    if (typeof age !== "number" || age <= 0) {
+        return (0, response_1.APIResponse)(res, null, "Age must be a positive number", 400);
+    }
+    if (typeof nationality !== "string" || nationality.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Nationality must be a non-empty string", 400);
+    }
+    const validKeys = ["name", "age", "nationality"];
+    const keys = Object.keys(req.body);
+    keys.forEach((key) => {
+        if (!validKeys.includes(key)) {
+            return (0, response_1.APIResponse)(res, null, `Unexpected field: ${key}`, 400);
+        }
+    });
+    next();
+};
+exports.validateAuthor = validateAuthor;
+const validateBook = (req, res, next) => {
+    const { title, summary, genres_id, author_id } = req.body;
+    let errors = [];
+    if (typeof title !== "string" || title.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Title must be a non-empty string", 400);
+    }
+    if (typeof summary !== "string" || summary.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Summary must be a non-empty string", 400);
+    }
+    if (!Array.isArray(genres_id) ||
+        !genres_id.every((genre) => typeof genre === "string")) {
+        return (0, response_1.APIResponse)(res, null, "genres_id must be an array of strings or empty", 400);
+    }
+    if (typeof author_id !== "string" || author_id.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Author_id must be a non-empty string", 400);
+    }
+    const validKeys = ["title", "summary", "genres_id", "author_id"];
+    const keys = Object.keys(req.body);
+    keys.forEach((key) => {
+        if (!validKeys.includes(key)) {
+            return (0, response_1.APIResponse)(res, null, `Unexpected field: ${key}`, 400);
+        }
+    });
+    next();
+};
+exports.validateBook = validateBook;
+const validateGenre = (req, res, next) => {
+    const { label } = req.body;
+    if (typeof label !== "string" || label.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Label must be a non-empty string", 400);
+    }
+    const validKeys = ["label"];
+    const keys = Object.keys(req.body);
+    keys.forEach((key) => {
+        if (!validKeys.includes(key)) {
+            return (0, response_1.APIResponse)(res, null, `Unexpected field: ${key}`, 400);
+        }
+    });
+    next();
+};
+exports.validateGenre = validateGenre;
+const validateEvent = (req, res, next) => {
+    const { name, address, date, author_id } = req.body;
+    let errors = [];
+    if (typeof name !== "string" || name.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Name must be a non-empty string", 400);
+    }
+    if (typeof address !== "string" || address.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Address must be a non-empty string", 400);
+    }
+    if (!Date.parse(date)) {
+        return (0, response_1.APIResponse)(res, null, "Date must be a valid ISO 8601 date string", 400);
+    }
+    if (typeof author_id !== "string" || author_id.trim() === "") {
+        return (0, response_1.APIResponse)(res, null, "Author ID must be a non-empty string", 400);
+    }
+    const validKeys = ["name", "address", "date", "author_id"];
+    const keys = Object.keys(req.body);
+    keys.forEach((key) => {
+        if (!validKeys.includes(key)) {
+            return (0, response_1.APIResponse)(res, null, `Unexpected field: ${key}`, 400);
+        }
+    });
+    next();
+};
+exports.validateEvent = validateEvent;
