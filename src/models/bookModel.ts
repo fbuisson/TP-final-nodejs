@@ -1,4 +1,5 @@
 import fs from "fs";
+import { Types } from "mongoose";
 import path from "path";
 
 //// [START]
@@ -6,6 +7,7 @@ import path from "path";
 
 // on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
 import { fileURLToPath } from "url";
+import { IBook } from "../types/IBook";
 
 // contient le chemin absolu du fichier actuel à savoir bookModel.js
 const __filename = fileURLToPath(import.meta.url); // bookModel.js
@@ -22,52 +24,56 @@ export const getAllBooks = () => {
   return JSON.parse(data);
 };
 
-export const getBookById = (id) => {
+export const getBookById = (id: Types.ObjectId) => {
   const books = getAllBooks();
-  return books.find((b) => b.id === id);
+  return books.find((b: IBook) => b.id.equals(id));
 };
 
-export const getBooksByAuthorId = (id) => {
+export const getBooksByAuthorId = (id: Types.ObjectId) => {
   const books = getAllBooks();
-  return books.filter((book) => book.author_id === id);
+  return books.filter((book: IBook) => book.author_id.equals(id));
 };
 
-export const getBooksByGenreId = (id) => {
+export const getBooksByGenreId = (id: Types.ObjectId) => {
   const books = getAllBooks();
-  return books.filter((book) => book.genres_id.includes(id));
+  return books.filter((book: IBook) => book.genres_id.includes(id));
 };
 
-export const addBook = (book) => {
+export const addBook = (book: IBook) => {
   const books = getAllBooks();
   books.push(book);
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const updateBook = (id, book) => {
+export const updateBook = (id: Types.ObjectId, book: IBook) => {
   const books = getAllBooks();
-  const index = books.findIndex((book) => book.id === id);
+  const index = books.findIndex((book: IBook) => book.id.equals(id));
   if (index !== -1) books[index] = book;
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const deleteBook = (id) => {
+export const deleteBook = (id: Types.ObjectId) => {
   const books = getAllBooks();
-  const index = books.findIndex((book) => book.id === id);
+  const index = books.findIndex((book: IBook) => book.id.equals(id));
   if (index !== -1) books.splice(index, 1);
   fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
 };
 
-export const deleteBooksByAuthorId = (authorId) => {
+export const deleteBooksByAuthorId = (authorId: Types.ObjectId) => {
   const books = getAllBooks();
-  const filteredBooks = books.filter((book) => book.author_id !== authorId);
+  const filteredBooks = books.filter(
+    (book: IBook) => !book.author_id.equals(authorId)
+  );
   fs.writeFileSync(bookFilePath, JSON.stringify(filteredBooks, null, 2));
 };
 
-export const deleteGenreByGenreId = (id) => {
+export const deleteGenreByGenreId = (id: Types.ObjectId) => {
   const books = getAllBooks();
 
-  books.forEach((book) => {
-    const index = book.genres_id.findIndex((genre_id) => genre_id === id);
+  books.forEach((book: IBook) => {
+    const index = book.genres_id.findIndex((genre_id: Types.ObjectId) =>
+      genre_id.equals(id)
+    );
     if (index !== -1) {
       book.genres_id.splice(index, 1);
     }

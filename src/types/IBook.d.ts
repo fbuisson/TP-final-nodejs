@@ -6,6 +6,6 @@ export interface IBook {
   id: Types.ObjectId;
   title: string;
   summary: string;
-  genre: IGenre;
-  author: IAuthor;
+  genres_id: Types.ObjectId[];
+  author_id: Types.ObjectId;
 }

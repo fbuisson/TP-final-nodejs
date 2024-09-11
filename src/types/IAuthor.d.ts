@@ -5,4 +5,6 @@ export interface IAuthor {
   name: string;
   age: number;
   nationality: string;
+  books?: IBook[];
+  events?: IEvent[];
 }

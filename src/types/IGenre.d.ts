@@ -1,6 +1,6 @@
-import { Document, Types } from "mongoose";
+import { Document, ObjectId } from "mongoose";
 
 export interface IGenre {
-  id: Types.ObjectId;
+  id: ObjectId;
   label: string;
 }
