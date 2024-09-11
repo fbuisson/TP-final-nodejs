@@ -1,82 +1,106 @@
-import fs from "fs";
 import { Types } from "mongoose";
-import path from "path";
-
-//// [START]
-// En raison de la version ES de Node
-
-// on importe fileUrlToPath qui converti une url de fichier en chemin de fichier
-import { fileURLToPath } from "url";
 import { IBook } from "../types/IBook";
+import Book from "../schema/books";
 
-// contient le chemin absolu du fichier actuel à savoir bookModel.js
-const __filename = fileURLToPath(import.meta.url); // bookModel.js
-
-// renvoi le repertoire (dossier) contenant le fichier (contient le chemin absolu du fichier actuel à savoir bookModel.js)
-const __dirname = path.dirname(__filename); // J02/express/models ..... J02/express/models/bookModel.js
-
-// On récupére le chemin vers notre fichier comments.json où est stockée toute la donnée
-const bookFilePath = path.join(__dirname, "../data/books.json");
-/// [END]
-
-export const getAllBooks = () => {
-  const data = fs.readFileSync(bookFilePath, "utf-8");
-  return JSON.parse(data);
+export const getAllBooks = async () => {
+  try {
+    return await Book.find().exec();
+  } catch (err) {
+    console.error(err);
+    return [];
+  }
 };
 
-export const getBookById = (id: Types.ObjectId) => {
-  const books = getAllBooks();
-  return books.find((b: IBook) => b.id.equals(id));
+export const getBookById = async (id: Types.ObjectId) => {
+  try {
+    const book = await Book.findById(id).exec();
+    return book;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
-export const getBooksByAuthorId = (id: Types.ObjectId) => {
-  const books = getAllBooks();
-  return books.filter((book: IBook) => book.author_id.equals(id));
+export const getBooksByAuthorId = async (id: Types.ObjectId) => {
+  try {
+    return await Book.find({ author_id: id })
+      .populate({
+        path: "author_id",
+        select: "name",
+      })
+      .exec();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
-export const getBooksByGenreId = (id: Types.ObjectId) => {
-  const books = getAllBooks();
-  return books.filter((book: IBook) => book.genres_id.includes(id));
+export const getBooksByGenreId = async (id: Types.ObjectId) => {
+  try {
+    return await Book.find({ genres_id: id })
+      .populate({
+        path: "genres_id",
+        select: "label",
+      })
+      .exec();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
-export const addBook = (book: IBook) => {
-  const books = getAllBooks();
-  books.push(book);
-  fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+export const addBook = async (book: IBook) => {
+  try {
+    return await Book.create(book);
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
-export const updateBook = (id: Types.ObjectId, book: IBook) => {
-  const books = getAllBooks();
-  const index = books.findIndex((book: IBook) => book.id.equals(id));
-  if (index !== -1) books[index] = book;
-  fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+export const updateBook = async (id: Types.ObjectId, book: IBook) => {
+  try {
+    const updatedBook = await Book.findByIdAndUpdate(id, book, { new: true });
+
+    if (!updatedBook) {
+      console.error(`Book with ID ${id} not found`);
+    }
+
+    return updatedBook;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
 export const deleteBook = (id: Types.ObjectId) => {
-  const books = getAllBooks();
-  const index = books.findIndex((book: IBook) => book.id.equals(id));
-  if (index !== -1) books.splice(index, 1);
-  fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+  try {
+    return Book.deleteOne({ _id: id }).exec();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
 export const deleteBooksByAuthorId = (authorId: Types.ObjectId) => {
-  const books = getAllBooks();
-  const filteredBooks = books.filter(
-    (book: IBook) => !book.author_id.equals(authorId)
-  );
-  fs.writeFileSync(bookFilePath, JSON.stringify(filteredBooks, null, 2));
+  try {
+    return Book.deleteOne({ author_id: authorId }).exec();
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
 
-export const deleteGenreByGenreId = (id: Types.ObjectId) => {
-  const books = getAllBooks();
+export const deleteGenreByGenreId = async (id: Types.ObjectId) => {
+  try {
+    const result = await Book.updateMany(
+      { genres_id: id },
+      { $pull: { genres_id: id } }
+    ).exec();
 
-  books.forEach((book: IBook) => {
-    const index = book.genres_id.findIndex((genre_id: Types.ObjectId) =>
-      genre_id.equals(id)
-    );
-    if (index !== -1) {
-      book.genres_id.splice(index, 1);
-    }
-  });
-  fs.writeFileSync(bookFilePath, JSON.stringify(books, null, 2));
+    return result;
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
 };
