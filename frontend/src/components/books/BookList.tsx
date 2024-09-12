@@ -1,11 +1,21 @@
 import React from "react";
+import { Types } from "mongoose";
 import { IBook } from "../../types/IBook";
+import { IAuthor } from "../../types/IAuthor";
 
 interface BookListProps {
   books: IBook[];
+  authors: IAuthor[];
 }
 
-const BookList: React.FC<BookListProps> = ({ books }) => {
+const BookList: React.FC<BookListProps> = ({ books, authors }) => {
+  const getAuthorName = (authorId: Types.ObjectId) => {
+    const author = authors.find(
+      (author) => author.id.toString() === authorId.toString()
+    );
+    return author ? author.name : "Unknown Author";
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border-b border-gray-200 shadow-md rounded-lg overflow-hidden">
@@ -25,7 +35,9 @@ const BookList: React.FC<BookListProps> = ({ books }) => {
               <td className="text-center p-4 whitespace-normal">
                 {book.title}
               </td>
-              <td className="text-center p-4 whitespace-normal">{`by ${book.author_id}`}</td>
+              <td className="text-center p-4 whitespace-normal">
+                {getAuthorName(book.author_id)}
+              </td>
               <td className="text-center p-4 whitespace-normal">
                 {book.summary}
               </td>

@@ -3,9 +3,11 @@ import { IBook } from "../types/IBook";
 import BookList from "../components/books/BookList";
 
 import { useNavigate } from "react-router-dom";
+import { IAuthor } from "../types/IAuthor";
 
 const BookPage = () => {
   const [books, setBooks] = useState<IBook[]>([]);
+  const [authors, setAuthors] = useState<IAuthor[]>([]);
 
   const navigate = useNavigate();
 
@@ -21,14 +23,30 @@ const BookPage = () => {
         setBooks(data.data);
       })
       .catch((err) => {
-        console.error("Error fetching books:", err);
+        console.error("Erreur : pas de livre trouvé", err);
+      });
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/authors")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setAuthors(data.data);
+      })
+      .catch((err) => {
+        console.error("Erreur : pas d'auteur trouvé", err);
       });
   }, []);
 
   return (
     <div>
-      <h1>Book List</h1>
-      {books ? <BookList books={books} /> : <p>Loading...</p>}
+      <h1 className="text-center">Book List</h1>
+      {books && authors.length > 0 ? (
+        <BookList books={books} authors={authors} />
+      ) : (
+        <p>Loading...</p>
+      )}
       <div className="flex items-center justify-center min-h-screen">
         <button
           onClick={handleRedirect}
