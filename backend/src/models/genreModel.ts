@@ -2,9 +2,9 @@ import { Types } from "mongoose";
 import { IGenre } from "../types/IGenre";
 import Genre from "../schema/genres";
 
-export const getAllGenres = () => {
+export const getAllGenres = async () => {
   try {
-    return Genre.find().exec();
+    return await Genre.find().exec();
   } catch (err) {
     console.error(err);
     return [];

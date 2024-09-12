@@ -34,7 +34,7 @@ export const createBook = async (request: Request, response: Response) => {
     let valid = true;
 
     for (const genreId of newBook.genres_id) {
-      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId));
+      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId as string));
       if (!genre) valid = false;
     }
 
@@ -58,7 +58,7 @@ export const updateBook = async (request: Request, response: Response) => {
     let valid = true;
 
     for (const genreId of newBook.genres_id) {
-      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId));
+      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId as string));
       if (!genre) valid = false;
     }
 
