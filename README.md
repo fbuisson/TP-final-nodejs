@@ -76,10 +76,10 @@ Démarrez le serveur de développement pour le frontend :
 
 ## Structure du projet
 - backend : Contient le code source de l'API Express et les modèles pour MongoDB :
--- controllers : Contient la logique métier pour les entités (livres, auteurs, événements, genres).
--- models : Contient les modèles Mongoose pour interagir avec MongoDB.
--- routes : Contient les routes pour gérer les requêtes API.
--- utils : Contient des utilitaires comme la fonction de réponse API.
+- controllers : Contient la logique métier pour les entités (livres, auteurs, événements, genres).
+- models : Contient les modèles Mongoose pour interagir avec MongoDB.
+- routes : Contient les routes pour gérer les requêtes API.
+- utils : Contient des utilitaires comme la fonction de réponse API.
 - frontend : Contient le code source du frontend développé en React avec Tailwind CSS.
 
 ## Accéder à l'application
