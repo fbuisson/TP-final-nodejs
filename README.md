@@ -84,5 +84,5 @@ Démarrez le serveur de développement pour le frontend :
 
 ## Accéder à l'application
 
-Backend (API) : L'API tourne sur http://localhost:3000
-Frontend : L'application frontend est accessible sur le port où tourne le serveur de développement (par exemple, http://localhost:5173)
+- Backend (API) : L'API tourne sur http://localhost:3000
+- Frontend : L'application frontend est accessible sur le port où tourne le serveur de développement (par exemple, http://localhost:5173)
