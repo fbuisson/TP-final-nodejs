@@ -5,7 +5,7 @@ import { describe, expect, test } from "@jest/globals";
 
 describe("API des évènements", () => {
   test("retourne la liste des évènements", async () => {
-    const response = await request(app).get("/api/events");
+    const response = await request(app).get("/events");
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body.data)).toBe(true);
   });
