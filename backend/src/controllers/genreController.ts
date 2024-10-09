@@ -2,14 +2,17 @@ import { Request, Response } from "express";
 import { genreModel } from "../models";
 import { APIResponse } from "../utils/response.js";
 import { Types } from "mongoose";
+import logger from "../utils/logger";
 
 export const getGenres = async (request: Request, response: Response) => {
   try {
+    logger.warn("[GET] Récupérer la liste des genres littéraires");
     const genres = await genreModel.getAllGenres();
-    console.log("GENRES :", genres);
     APIResponse(response, genres, "List of all genres", 200);
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    logger.error(
+      `Erreur, impossible de récupérer la liste des genres: ${err.message}`
+    );
     APIResponse(response, null, "Genre not found", 404);
   }
 };
@@ -22,7 +25,6 @@ export const getGenre = async (request: Request, response: Response) => {
       APIResponse(response, genre, "Genre found", 200);
     }
   } catch (err) {
-    console.error(err);
     APIResponse(response, null, "Genre not found", 404);
   }
 };

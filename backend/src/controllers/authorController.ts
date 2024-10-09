@@ -2,13 +2,17 @@ import { Request, Response } from "express";
 import { authorModel } from "../models";
 import { APIResponse } from "../utils/response";
 import { Types } from "mongoose";
+import logger from "../utils/logger";
 
 export const getAuthors = async (request: Request, response: Response) => {
   try {
+    logger.warn("[GET] Récupérer la liste de tous les auteurs");
     const authors = await authorModel.getAllAuthors();
     APIResponse(response, authors, "List of all authors");
-  } catch (err) {
-    console.error(err);
+  } catch (err: any) {
+    logger.error(
+      `Erreur impossible de récupérer la liste des auteurs: ${err.message}`
+    );
     APIResponse(response, null, "Error fetching authors", 500);
   }
 };
