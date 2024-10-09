@@ -1,0 +1,15 @@
+{
+  "name": "3wa",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:client": "pnpm --filter 3wa-client dev",
+    "dev:server": "pnpm --filter 3wa-server dev",
+    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\""
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
