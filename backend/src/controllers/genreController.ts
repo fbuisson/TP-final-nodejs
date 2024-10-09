@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { genreModel } from "../models";
-import { APIResponse } from "../utils/response.js";
+import { APIResponse } from "../utils/response";
 import { Types } from "mongoose";
 import logger from "../utils/logger";
 

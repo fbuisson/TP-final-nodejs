@@ -1,16 +1,14 @@
 import argon2 from "argon2";
 
 export async function hashPassword(password: string): Promise<string | void> {
-  // On va hash un mot de passe
   try {
     const hash = await argon2.hash(password, {
-      type: argon2.argon2id, // utilisation de l'algo argon2id pour le hashage -> le + recommandé
+      type: argon2.argon2id,
 
-      // v options hardware en dessous
-      memoryCost: 2 ** 16, // 2^16=65536=64MB
-      timeCost: 3, // 3 passes -> cad 3 itérations pour le hashage
-      parallelism: 1, // 1 thread (coeur CPU) utilisé pour le hashage
-      salt: Buffer.from("SuperSaltGentil"), // "clé" ou salt de hashage pour rendre le hashage unique
+      memoryCost: 2 ** 16,
+      timeCost: 3,
+      parallelism: 1,
+      salt: Buffer.from("SuperSaltGentil"),
     });
 
     console.log("Mot de passe hashé: ", hash);
@@ -20,7 +18,6 @@ export async function hashPassword(password: string): Promise<string | void> {
   }
 }
 
-// On vérifie que le mot de passe hashé et en clair matches bien
 export async function verifyPassword(
   hashedPassword: string,
   inputPassword: string
