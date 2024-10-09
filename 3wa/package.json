@@ -4,12 +4,23 @@
   "scripts": {
     "dev:client": "pnpm --filter 3wa-client dev",
     "dev:server": "pnpm --filter 3wa-server dev",
-    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\""
+    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\"",
+    "generate": "drizzle-kit generate --config=src/config/drizzle.ts",
+    "migrate": "tsx -r dotenv/config src/config/migrate.ts",
+    "studio": "drizzle-kit studio --config=src/config/drizzle.ts"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "@types/pg": "^8.11.10",
+    "concurrently": "^8.2.2",
+    "drizzle-kit": "^0.25.0",
+    "tsx": "^4.19.1"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.34.1",
+    "pg": "^8.13.0",
+    "postgres": "^3.4.4"
   }
 }
