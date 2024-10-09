@@ -33,16 +33,14 @@ export const addUser = (user: Partial<IUser>) => {
   }
 };
 
-export const updateUser = async (
-  id: Types.ObjectId,
-  userData: Partial<IUser>
-) => {
+export const updateUser = async (id: Types.ObjectId, userData: Partial<IUser>): Promise<IUser | null> => {
   try {
-    return User.findByIdAndUpdate(id, userData, { new: true }).exec();
-  } catch (err) {
-    console.error(err);
+      return User.findByIdAndUpdate(id, userData, { new: true }).exec();
+  } catch (err: any) {
+      console.error(err);
+      return null;
   }
-};
+}
 
 export const findByCredentials = async (email: string): Promise<any> => {
   try {
