@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { genreModel } from "../models";
-import { APIResponse } from "../utils/response.js";
+import { APIResponse } from "../utils/response";
 import { Types } from "mongoose";
 
 export const getGenres = async (request: Request, response: Response) => {
