@@ -4,16 +4,16 @@ import {
   login,
   logout,
 } from "../controllers/authentificationController";
-
+import { authMiddleware } from "../middlewares/authentificationMiddleware";
 const router = Router();
 
-// GET http://localhost:3000/authentification/register
-router.get("/register", register);
+// POST http://localhost:3000/authentification/register
+router.post("/register", register);
 
-// GET http://localhost:3000/authentification/login
-router.get("/login", login);
+// POST http://localhost:3000/authentification/login
+router.post("/login", login);
 
 // POST http://localhost:3000/authentification/logout
-router.post("/logout", logout);
+router.post("/logout", authMiddleware, logout);
 
 export default router;

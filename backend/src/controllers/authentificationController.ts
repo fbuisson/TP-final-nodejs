@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 
-import { APIResponse, hashPassword, verifyPassword } from "../utils";
+import { APIResponse, generateAccessToken, generateRefreshToken, hashPassword, verifyPassword } from "../utils";
 import { userValidation } from "../validation/users";
 import { z } from "zod";
 import { addUser, findByCredentials } from "../models";
@@ -45,27 +45,33 @@ export const login = async (request: Request, response: Response) => {
     if (!user)
       return APIResponse(response, [], "Email ou mot de passe invalide", 400);
 
-    // vérification du mot de passe
     if ((await verifyPassword(user.password, password)) === false) {
       return APIResponse(response, [], "Email ou mot de passe invalide", 400);
     }
 
-    // email + mdp corrects: on crée un JWT, on stocke l'user ID dans le payload (body du token) pour le lire ultérieurement
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: "1h",
+    const accessToken = generateAccessToken(user.id);
+    const refreshToken = generateRefreshToken(user.id);
+
+    response.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: NODE_ENV === "production",
     });
-    response.cookie("token", token, {
-      httpOnly: true, // true empêche l'accès au cookie en javascript: accessible uniquement via communication http
-      sameSite: "strict", // protége contre les attaques CSRF
-      secure: NODE_ENV === "production", // signifie que le cookie ne sera envoyé que sur du HTTPS
+
+    response.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: NODE_ENV === "production",
     });
-    APIResponse(response, null, "Vous êtes connecté", 200);
+
+    return APIResponse(response, null, "Vous êtes connecté", 200);
   } catch (err) {
     APIResponse(response, null, "Erreur serveur", 500);
   }
 };
 
 export const logout = (request: Request, response: Response) => {
-  response.clearCookie("token");
+  response.clearCookie("accessToken");
+  response.clearCookie("refreshToken");
   APIResponse(response, null, "Vous êtes déconnecté", 200);
 };

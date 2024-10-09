@@ -1,23 +1,21 @@
 import { NextFunction, Request, Response } from "express";
 import { env } from "../config/env";
 import jwt from "jsonwebtoken";
-import { APIResponse } from "../utils/response";
+import { APIResponse } from "../utils";
 
 const { JWT_SECRET } = env;
 
-export const authMiddleware = (
-  request: Request,
-  response: Response,
-  next: NextFunction
-) => {
-  const token = request.cookies.token;
-  if (!token)
-    return APIResponse(response, null, "Vous n'êtes pas authentifié", 401);
-  try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    response.locals.user = decoded;
-    next();
-  } catch (error) {
-    return APIResponse(response, null, "Vous n'êtes pas authentifié", 401);
-  }
+export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+    const { accessToken } = req.cookies;
+    if (!accessToken) {
+      return APIResponse(res, null, 'No token provided.', 401);
+    }
+    try {
+      const decoded = jwt.verify(accessToken, JWT_SECRET);
+      res.locals.user = decoded;
+      next();
+    } catch (error) {
+        console.error('Failed to authenticate token:', error);
+        return APIResponse(res, null, 'Failed to authenticate token.', 401);
+    }
 };

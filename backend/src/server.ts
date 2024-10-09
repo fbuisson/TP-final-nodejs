@@ -5,6 +5,7 @@ import cors from "cors";
 import { connectDB } from "./config/database";
 import { env } from "./config/env";
 import cookieParser from "cookie-parser";
+import { refreshTokenMiddleware } from "./middlewares/refreshTokenMiddleware";
 
 // Je définis mon port (3000)
 const { PORT, ORIGIN } = env;
@@ -29,6 +30,7 @@ app.use(express.urlencoded({ extended: true })); // lire le body lorsque le payl
 app.set("view engine", "ejs"); // Configurer Express pour utiliser EJS comme moteur de vue (views)
 app.set("views", path.join(process.cwd(), "views")); // Définir le répertoire où sont stockés les fichiers de vues (views)
 
+app.use(refreshTokenMiddleware);
 // J'utilise le router défini dans routes/index.js pour gérer les routes de mon application de façon globale
 app.use(routes);
 
