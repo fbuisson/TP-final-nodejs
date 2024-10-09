@@ -6,7 +6,7 @@ import logger from "../utils/logger";
 
 export const getAuthors = async (request: Request, response: Response) => {
   try {
-    logger.warn("[GET] Récupérer la liste de tous les auteurs");
+    logger.info("[GET] Récupérer la liste de tous les auteurs");
     const authors = await authorModel.getAllAuthors();
     APIResponse(response, authors, "List of all authors");
   } catch (err: any) {

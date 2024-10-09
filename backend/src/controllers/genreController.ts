@@ -6,7 +6,7 @@ import logger from "../utils/logger";
 
 export const getGenres = async (request: Request, response: Response) => {
   try {
-    logger.warn("[GET] Récupérer la liste des genres littéraires");
+    logger.info("[GET] Récupérer la liste des genres littéraires");
     const genres = await genreModel.getAllGenres();
     APIResponse(response, genres, "List of all genres", 200);
   } catch (err: any) {
