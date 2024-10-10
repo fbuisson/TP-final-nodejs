@@ -50,14 +50,14 @@ app.get("/", (req: Request, res: Response) => {
 //   console.log(`Server is running on http://localhost:${PORT}`);
 // });
 
-if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-}
+// if (require.main === module) {
+//   app.listen(PORT, () => {
+//     console.log(`Server is running on http://localhost:${PORT}`);
+//   });
+// }
 
-// server.listen(PORT, () => {
-//   console.log(`Server is running on http://localhost:${PORT}`);
-// });
+server.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
+});
 
 export default app;
