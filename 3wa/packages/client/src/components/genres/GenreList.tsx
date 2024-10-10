@@ -21,7 +21,7 @@ const GenreList: React.FC<BookListProps> = ({ genres }) => {
               key={genre._id?.toString()}
             >
               <td className="text-center p-4 whitespace-normal">
-                {genre.label}
+                {genre.name}
               </td>
             </tr>
           ))}

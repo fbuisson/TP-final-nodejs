@@ -15,6 +15,13 @@
       "when": 1728553785462,
       "tag": "0001_fat_wallflower",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1728566672462,
+      "tag": "0002_regular_major_mapleleaf",
+      "breakpoints": true
     }
   ]
 }
