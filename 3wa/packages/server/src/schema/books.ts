@@ -1,11 +1,15 @@
-import mongoose, { Schema, Types } from "mongoose";
-import { IBook } from "../types/IBook";
+import { pgTable, text, uuid } from "drizzle-orm/pg-core";
+import { authors } from "./authors";
+import { genres } from "./genres";
 
-const bookSchema: Schema = new Schema({
-  title: { type: String, required: true },
-  summary: { type: String, required: true },
-  genres_id: { type: Types.ObjectId, required: true, ref: "Genre" },
-  author_id: { type: Types.ObjectId, required: true, ref: "Author" },
+export const books = pgTable("books", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  title: text("title").notNull(),
+  summary: text("summary").notNull(),
+  genresId: uuid("genres_id").references(() => genres.id, {
+    onDelete: "set null",
+  }),
+  authorId: uuid("author_id").references(() => authors.id, {
+    onDelete: "cascade",
+  }),
 });
-
-export default mongoose.model<IBook>("Book", bookSchema);

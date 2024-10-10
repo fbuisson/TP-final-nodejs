@@ -1,15 +1,9 @@
-import mongoose, { Schema } from "mongoose";
-import { IUser } from "../types/IUser";
+import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
 
-// Définition du schéma mongoose pour l'entité User
-// définit la structure des données + options de validations
-const userSchema: Schema = new Schema({
-  name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true, select: false },
-  refreshToken: { type: String, required: false, select: true },
+export const users = pgTable("users", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
+  refreshToken: varchar("refresh_token", { length: 255 }),
 });
-
-// Création du modèle User basé sur le schéma userSchema
-// model utilisé pour CRUD les documents de la collection 'users' de mongodb
-export default mongoose.model<IUser>("User", userSchema);

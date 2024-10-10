@@ -2,7 +2,6 @@ import express, { Request, Response } from "express";
 import routes from "./routes/index";
 import path from "path";
 import cors from "cors";
-import { connectDB } from "./config/database";
 import { env } from "./config/env";
 import cookieParser from "cookie-parser";
 import { refreshTokenMiddleware } from "./middlewares/refreshTokenMiddleware";
@@ -22,7 +21,7 @@ app.use(
     credentials: true, // Autoriser les cookies
   })
 );
-connectDB();
+
 // Utilisation du middleware express.json() pour analyser les requêtes JSON
 app.use(express.json()); // le payload (le body) de la req sera accessible dans toutes mes routes depuis req.body
 app.use(express.urlencoded({ extended: true })); // lire le body lorsque le payload sera de type form-data-urlencoded (formulaire)

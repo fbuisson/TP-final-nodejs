@@ -1,11 +1,12 @@
-import mongoose, { Schema, Types } from "mongoose";
-import { IEvent } from "../types/IEvent";
+import { pgTable, uuid, varchar } from "drizzle-orm/pg-core";
+import { authors } from "../schema/authors";
 
-const eventSchema: Schema = new Schema({
-  name: { type: String, required: true },
-  address: { type: String, required: true },
-  date: { type: String, required: true },
-  author: { type: Types.ObjectId, required: true, ref: "Author" },
+export const events = pgTable("events", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  address: varchar("address", { length: 255 }).notNull(),
+  date: varchar("date", { length: 255 }).notNull(),
+  authorId: uuid("author_id")
+    .references(() => authors.id, { onDelete: "cascade" })
+    .notNull(),
 });
-
-export default mongoose.model<IEvent>("Event", eventSchema);

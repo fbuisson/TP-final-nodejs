@@ -4,10 +4,7 @@
   "scripts": {
     "dev:client": "pnpm --filter 3wa-client dev",
     "dev:server": "pnpm --filter 3wa-server dev",
-    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\"",
-    "generate": "drizzle-kit generate --config=src/config/drizzle.ts",
-    "migrate": "tsx -r dotenv/config src/config/migrate.ts",
-    "studio": "drizzle-kit studio --config=src/config/drizzle.ts"
+    "dev": "concurrently \"pnpm dev:client\" \"pnpm dev:server\""
   },
   "workspaces": [
     "packages/*"
