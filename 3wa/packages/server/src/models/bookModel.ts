@@ -114,16 +114,32 @@ export const getBooksByGenreId = async (genreId: string) => {
 
 export const addBook = async (book: NewBook) => {
   try {
-    db.insert(books).values(book).execute();
+    const [createdBook] = await db.insert(books).values(book).returning();
+    return createdBook;
   } catch (err: any) {
     logger.error(`Erreur lors de l'ajout d'un nouveau livre : ${err.message}`);
     return null;
   }
 };
 
-export const updateBook = async (id: string, book: Book) => {
+export const addBookGenres = async (
+  bookGenresData: { bookId: string; genreId: string }[]
+) => {
+  await db.insert(bookGenres).values(bookGenresData).execute();
+};
+
+export const deleteBookGenres = async (bookId: string) => {
+  await db.delete(bookGenres).where(eq(bookGenres.bookId, bookId)).execute();
+};
+
+export const updateBook = async (id: string, book: Partial<Book>) => {
   try {
-    db.update(books).set(book).where(eq(books.id, id)).execute();
+    const [updatedBook] = await db
+      .update(books)
+      .set(book)
+      .where(eq(books.id, id))
+      .returning();
+    return updatedBook;
   } catch (err: any) {
     logger.error(
       `Erreur lors de la modification des informations du livre : ${err.message}`

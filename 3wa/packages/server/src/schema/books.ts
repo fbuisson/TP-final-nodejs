@@ -1,5 +1,6 @@
 import { pgTable, text, uuid } from "drizzle-orm/pg-core";
 import { authors } from "./authors";
+import { genres } from "./genres";
 
 export const books = pgTable("books", {
   id: uuid("id").defaultRandom().primaryKey(),

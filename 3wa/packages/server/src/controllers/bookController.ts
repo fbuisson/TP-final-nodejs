@@ -38,7 +38,19 @@ export const createBook = async (request: Request, response: Response) => {
     }
 
     if (valid) {
-      const createdBook = await bookModel.addBook(newBook);
+      const createdBook = await bookModel.addBook({
+        title: newBook.title,
+        summary: newBook.summary,
+        authorId: newBook.authorId,
+      });
+
+      const bookGenresData = newBook.genres_id.map((genreId: string) => ({
+        bookId: createdBook?.id,
+        genreId,
+      }));
+
+      await bookModel.addBookGenres(bookGenresData);
+
       APIResponse(response, createdBook, "New book created", 201);
     } else {
       APIResponse(response, null, "Genre not valid", 404);
@@ -62,7 +74,21 @@ export const updateBook = async (request: Request, response: Response) => {
     }
 
     if (book && valid) {
-      const updatedBook = await bookModel.updateBook(id, newBook);
+      const updatedBook = await bookModel.updateBook(id, {
+        title: newBook.title,
+        summary: newBook.summary,
+        authorId: newBook.authorId,
+      });
+
+      await bookModel.deleteBookGenres(id);
+
+      const bookGenresData = newBook.genres_id.map((genreId: string) => ({
+        bookId: updatedBook?.id,
+        genreId,
+      }));
+
+      await bookModel.addBookGenres(bookGenresData);
+
       APIResponse(response, updatedBook, "Book was successfully modified", 200);
     } else {
       APIResponse(response, null, "Book not found or invalid genre", 404);
@@ -78,7 +104,9 @@ export const deleteBook = async (request: Request, response: Response) => {
   try {
     const book = await bookModel.getBookById(id);
     if (book) {
+      await bookModel.deleteBookGenres(id);
       await bookModel.deleteBook(id);
+
       APIResponse(response, null, "Book was successfully deleted", 204);
     } else {
       APIResponse(response, null, "Book not found", 404);
