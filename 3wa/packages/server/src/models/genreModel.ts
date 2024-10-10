@@ -1,49 +1,67 @@
-import { Types } from "mongoose";
-import { IGenre } from "../types/IGenre";
-import Genre from "../schema/genres";
+import { db } from "../config/pool";
+import logger from "../utils/logger";
+import { eq } from "drizzle-orm";
+import { Genre, NewGenre } from "../entities/Genre";
+import { genres } from "../schema/genres";
 
 export const getAllGenres = async () => {
   try {
-    return await Genre.find().exec();
-  } catch (err) {
-    console.error(err);
-    return [];
+    return db
+      .select({
+        id: genres.id,
+        name: genres.name,
+      })
+      .from(genres)
+      .execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la récupération des genres: ${err.message}`);
+    return;
   }
 };
 
-export const getGenreById = async (id: Types.ObjectId) => {
+export const getGenreById = async (id: string) => {
   try {
-    const genre = await Genre.findById(id).exec();
-    return genre;
-  } catch (err) {
-    console.error(err);
+    return db
+      .select({
+        id: genres.id,
+        name: genres.name,
+      })
+      .from(genres)
+      .where(eq(genres.id, id))
+      .execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la récupération du genre: ${err.message}`);
     return null;
   }
 };
 
-export const addGenre = async (genre: IGenre) => {
+export const addGenre = async (genre: NewGenre) => {
   try {
-    return Genre.create(genre);
-  } catch (err) {
-    console.error(err);
+    return db
+      .insert(genres)
+      .values(genre)
+      .returning({ id: genres.id })
+      .execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la création du nouveau genre: ${err.message}`);
     return null;
   }
 };
 
-export const updateGenre = (id: Types.ObjectId, genre: IGenre) => {
+export const updateGenre = async (id: string, genre: Genre) => {
   try {
-    return Genre.updateOne({ _id: id }, genre).exec();
-  } catch (err) {
-    console.error(err);
+    return db.update(genres).set(genre).where(eq(genres.id, id)).execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la mise à jour du genre: ${err.message}`);
     return null;
   }
 };
 
-export const deleteGenre = (id: Types.ObjectId) => {
+export const deleteGenre = async (id: string) => {
   try {
-    return Genre.deleteOne(id).exec();
-  } catch (err) {
-    console.error(err);
+    return db.delete(genres).where(eq(genres.id, id)).execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la suppression du genre: ${err.message}`);
     return null;
   }
 };

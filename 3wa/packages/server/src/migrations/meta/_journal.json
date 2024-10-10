@@ -8,6 +8,13 @@
       "when": 1728549844329,
       "tag": "0000_common_captain_cross",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728553785462,
+      "tag": "0001_fat_wallflower",
+      "breakpoints": true
     }
   ]
 }

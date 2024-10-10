@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { bookModel, genreModel } from "../models";
 import { APIResponse } from "../utils/response";
-import { Types } from "mongoose";
 
 export const getBooks = async (request: Request, response: Response) => {
   try {
@@ -16,7 +15,7 @@ export const getBooks = async (request: Request, response: Response) => {
 export const getBook = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    const book = await bookModel.getBookById(id);
     if (book) {
       APIResponse(response, book, "Book found", 200);
     } else {
@@ -34,7 +33,7 @@ export const createBook = async (request: Request, response: Response) => {
     let valid = true;
 
     for (const genreId of newBook.genres_id) {
-      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId as string));
+      const genre = await genreModel.getGenreById(genreId);
       if (!genre) valid = false;
     }
 
@@ -54,19 +53,16 @@ export const updateBook = async (request: Request, response: Response) => {
   const { id } = request.params;
   const newBook = request.body;
   try {
-    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    const book = await bookModel.getBookById(id);
     let valid = true;
 
     for (const genreId of newBook.genres_id) {
-      const genre = await genreModel.getGenreById(new Types.ObjectId(genreId as string));
+      const genre = await genreModel.getGenreById(genreId);
       if (!genre) valid = false;
     }
 
     if (book && valid) {
-      const updatedBook = await bookModel.updateBook(
-        new Types.ObjectId(id),
-        newBook
-      );
+      const updatedBook = await bookModel.updateBook(id, newBook);
       APIResponse(response, updatedBook, "Book was successfully modified", 200);
     } else {
       APIResponse(response, null, "Book not found or invalid genre", 404);
@@ -80,9 +76,9 @@ export const updateBook = async (request: Request, response: Response) => {
 export const deleteBook = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const book = await bookModel.getBookById(new Types.ObjectId(id));
+    const book = await bookModel.getBookById(id);
     if (book) {
-      await bookModel.deleteBook(new Types.ObjectId(id));
+      await bookModel.deleteBook(id);
       APIResponse(response, null, "Book was successfully deleted", 204);
     } else {
       APIResponse(response, null, "Book not found", 404);

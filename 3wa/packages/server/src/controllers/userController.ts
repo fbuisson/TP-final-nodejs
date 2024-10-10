@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import { getAllUsers, getUserById } from "../models";
 import { APIResponse } from "../utils";
-import { Types } from "mongoose";
 
 export const getUsers = async (request: Request, response: Response) => {
   const users = await getAllUsers();
@@ -11,7 +10,7 @@ export const getUsers = async (request: Request, response: Response) => {
 
 export const getUser = async (request: Request, response: Response) => {
   const { id } = request.params;
-  const objectId = new Types.ObjectId(id);
+  const objectId = id;
 
   const user = await getUserById(objectId);
   if (user) {

@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { eventModel, authorModel } from "../models";
 import { APIResponse } from "../utils/response";
-import { Types } from "mongoose";
 
 export const getEvents = async (request: Request, response: Response) => {
   try {
@@ -16,7 +15,7 @@ export const getEvents = async (request: Request, response: Response) => {
 export const getEvent = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const event = await eventModel.getEventById(new Types.ObjectId(id));
+    const event = await eventModel.getEventById(id);
     if (event) {
       APIResponse(response, event, "Event found");
     } else {
@@ -30,7 +29,7 @@ export const getEvent = async (request: Request, response: Response) => {
 
 export const createEvent = async (request: Request, response: Response) => {
   const newEvent = request.body;
-  const authorId = new Types.ObjectId(newEvent.author_id as string);
+  const authorId = newEvent.author_id;
 
   try {
     const author = await authorModel.getAuthorById(authorId);
@@ -49,9 +48,9 @@ export const createEvent = async (request: Request, response: Response) => {
 export const deleteEvent = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const event = await eventModel.getEventById(new Types.ObjectId(id));
+    const event = await eventModel.getEventById(id);
     if (event) {
-      await eventModel.deleteEvent(new Types.ObjectId(id));
+      await eventModel.deleteEvent(id);
       APIResponse(response, null, "Event deleted", 204);
     } else {
       APIResponse(response, null, "Event not found", 404);
@@ -66,16 +65,11 @@ export const updateEvent = async (request: Request, response: Response) => {
   const { id } = request.params;
   const newEvent = request.body;
   try {
-    const event = await eventModel.getEventById(new Types.ObjectId(id));
-    const author = await authorModel.getAuthorById(
-      new Types.ObjectId(newEvent.author_id as string)
-    );
+    const event = await eventModel.getEventById(id);
+    const author = await authorModel.getAuthorById(newEvent.author_id);
 
     if (event && author) {
-      const updatedEvent = await eventModel.updateEvent(
-        new Types.ObjectId(id),
-        newEvent
-      );
+      const updatedEvent = await eventModel.updateEvent(id, newEvent);
       APIResponse(response, updatedEvent, "Event updated", 200);
     } else {
       APIResponse(response, null, "Event or Author not found", 404);

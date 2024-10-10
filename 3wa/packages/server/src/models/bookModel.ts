@@ -1,106 +1,162 @@
-import { Types } from "mongoose";
-import { IBook } from "../types/IBook";
-import Book from "../schema/books";
+import { db } from "../config/pool";
+import { Book, NewBook } from "../entities/Book";
+import logger from "../utils/logger";
+import { eq } from "drizzle-orm";
+import { books } from "../schema/books";
+import { authors, genres, bookGenres } from "../schema";
 
 export const getAllBooks = async () => {
   try {
-    return await Book.find().exec();
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-};
-
-export const getBookById = async (id: Types.ObjectId) => {
-  try {
-    const book = await Book.findById(id).exec();
-    return book;
-  } catch (err) {
-    console.error(err);
-    return null;
-  }
-};
-
-export const getBooksByAuthorId = async (id: Types.ObjectId) => {
-  try {
-    return await Book.find({ author_id: id })
-      .populate({
-        path: "author_id",
-        select: "name",
+    return db
+      .select({
+        id: books.id,
+        title: books.title,
+        summary: books.summary,
+        genres: {
+          name: genres.name,
+        },
+        author: {
+          name: authors.id,
+        },
       })
-      .exec();
-  } catch (err) {
-    console.error(err);
-    return null;
+      .from(books)
+      .leftJoin(authors, eq(books.authorId, authors.id))
+      .leftJoin(bookGenres, eq(books.id, bookGenres.bookId))
+      .leftJoin(genres, eq(books.authorId, genres.id))
+      .execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la récupération des livres: ${err.message}`);
+    return;
   }
 };
 
-export const getBooksByGenreId = async (id: Types.ObjectId) => {
+export const getBookById = async (id: string) => {
   try {
-    return await Book.find({ genres_id: id })
-      .populate({
-        path: "genres_id",
-        select: "label",
+    return db
+      .select({
+        id: books.id,
+        title: books.title,
+        summary: books.summary,
+        genres: {
+          name: genres.name,
+        },
+        author: {
+          name: authors.id,
+        },
       })
-      .exec();
-  } catch (err) {
-    console.error(err);
+      .from(books)
+      .leftJoin(authors, eq(books.authorId, authors.id))
+      .leftJoin(bookGenres, eq(bookGenres.bookId, books.id))
+      .leftJoin(genres, eq(books.authorId, genres.id))
+      .where(eq(books.id, id))
+      .execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la récupération des livres: ${err.message}`);
+    return;
+  }
+};
+
+export const getBooksByAuthorId = async (authorId: string) => {
+  try {
+    return db
+      .select({
+        id: books.id,
+        title: books.title,
+        summary: books.summary,
+        genres: {
+          name: genres.name,
+        },
+        author: {
+          name: authors.id,
+        },
+      })
+      .from(books)
+      .leftJoin(authors, eq(books.authorId, authors.id))
+      .leftJoin(genres, eq(books.authorId, genres.id))
+      .leftJoin(bookGenres, eq(bookGenres.bookId, books.id))
+      .where(eq(books.authorId, authorId))
+      .execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la récupération de la liste des livres en fonction de l'auteur: ${err.message}`
+    );
     return null;
   }
 };
 
-export const addBook = async (book: IBook) => {
+export const getBooksByGenreId = async (genreId: string) => {
   try {
-    return await Book.create(book);
-  } catch (err) {
-    console.error(err);
+    return db
+      .select({
+        id: books.id,
+        title: books.title,
+        summary: books.summary,
+        genres: {
+          name: genres.name,
+        },
+        author: {
+          name: authors.id,
+        },
+      })
+      .from(books)
+      .leftJoin(authors, eq(books.authorId, authors.id))
+      .leftJoin(genres, eq(books.authorId, genres.id))
+      .leftJoin(bookGenres, eq(bookGenres.bookId, books.id))
+      .where(eq(bookGenres.genreId, genreId))
+      .execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la récupération de la liste des livres en fonction du genre: ${err.message}`
+    );
     return null;
   }
 };
 
-export const updateBook = async (id: Types.ObjectId, book: IBook) => {
+export const addBook = async (book: NewBook) => {
   try {
-    const updatedBook = await Book.findByIdAndUpdate(id, book, { new: true });
-
-    if (!updatedBook) {
-      console.error(`Book with ID ${id} not found`);
-    }
-
-    return updatedBook;
-  } catch (err) {
-    console.error(err);
+    db.insert(books).values(book).execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de l'ajout d'un nouveau livre : ${err.message}`);
     return null;
   }
 };
 
-export const deleteBook = (id: Types.ObjectId) => {
+export const updateBook = async (id: string, book: Book) => {
   try {
-    return Book.deleteOne({ _id: id }).exec();
-  } catch (err) {
-    console.error(err);
+    db.update(books).set(book).where(eq(books.id, id)).execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la modification des informations du livre : ${err.message}`
+    );
     return null;
   }
 };
 
-export const deleteBooksByAuthorId = (authorId: Types.ObjectId) => {
+export const deleteBook = async (id: string) => {
   try {
-    return Book.deleteOne({ author_id: authorId }).exec();
-  } catch (err) {
-    console.error(err);
+    db.delete(books).where(eq(books.id, id)).execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la suppression du livre : ${err.message}`);
     return null;
   }
 };
 
-export const deleteGenreByGenreId = async (id: Types.ObjectId) => {
+export const deleteBooksByAuthorId = async (authorId: string) => {
   try {
-    const result = await Book.updateMany(
-      { genres_id: id },
-      { $pull: { genres_id: id } }
-    ).exec();
+    db.delete(books).where(eq(books.authorId, authorId)).execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la suppression du livre en fonction de l'auteur : ${err.message}`
+    );
+    return null;
+  }
+};
 
-    return result;
-  } catch (err) {
-    console.error(err);
+export const deleteGenreByGenreId = async (genresId: string) => {
+  try {
+    db.delete(books).where(eq(bookGenres.genreId, genresId)).execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la suppression du genre : ${err.message}`);
     return null;
   }
 };

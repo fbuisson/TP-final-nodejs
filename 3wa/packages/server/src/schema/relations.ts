@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
-import { books, authors, genres, events } from "./";
+import { books, bookGenres, authors, genres, events } from "./";
 
 export const booksRelations = relations(books, ({ many, one }) => ({
   author: one(authors),
-  genre: many(genres),
+  genres: many(bookGenres),
 }));
 
 export const authorsRelation = relations(authors, ({ many }) => ({
@@ -11,8 +11,13 @@ export const authorsRelation = relations(authors, ({ many }) => ({
   event: many(events),
 }));
 
+export const bookGenresRelation = relations(bookGenres, ({ one }) => ({
+  book: one(books),
+  genre: one(genres),
+}));
+
 export const genresRelation = relations(genres, ({ many }) => ({
-  book: many(books),
+  books: many(books),
 }));
 
 export const eventsRelation = relations(events, ({ many }) => ({
