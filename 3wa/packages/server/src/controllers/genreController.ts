@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { genreModel } from "../models";
 import { APIResponse } from "../utils/response";
-import { Types } from "mongoose";
 import logger from "../utils/logger";
 
 export const getGenres = async (request: Request, response: Response) => {
@@ -20,7 +19,7 @@ export const getGenres = async (request: Request, response: Response) => {
 export const getGenre = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    const genre = await genreModel.getGenreById(new Types.ObjectId(id));
+    const genre = await genreModel.getGenreById(id);
     if (genre) {
       APIResponse(response, genre, "Genre found", 200);
     }
@@ -43,9 +42,9 @@ export const createGenre = async (request: Request, response: Response) => {
 export const deleteGenre = async (request: Request, response: Response) => {
   try {
     const id = request.params.id;
-    const genre = await genreModel.getGenreById(new Types.ObjectId(id));
+    const genre = await genreModel.getGenreById(id);
     if (genre) {
-      genreModel.deleteGenre(new Types.ObjectId(id));
+      genreModel.deleteGenre(id);
       APIResponse(response, null, "Genre deleted", 204);
     }
   } catch (err) {
@@ -58,9 +57,9 @@ export const updateGenre = async (request: Request, response: Response) => {
   try {
     const id = request.params.id;
     const newGenre = request.body;
-    const genre = await genreModel.getGenreById(new Types.ObjectId(id));
+    const genre = await genreModel.getGenreById(id);
     if (genre) {
-      genreModel.updateGenre(new Types.ObjectId(id), newGenre);
+      genreModel.updateGenre(id, newGenre);
       APIResponse(response, newGenre, "Genre updated", 200);
     }
   } catch (err) {

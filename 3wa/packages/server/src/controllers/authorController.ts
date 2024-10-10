@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { authorModel } from "../models";
 import { APIResponse } from "../utils/response";
-import { Types } from "mongoose";
 import logger from "../utils/logger";
 
 export const getAuthors = async (request: Request, response: Response) => {
@@ -20,7 +19,7 @@ export const getAuthors = async (request: Request, response: Response) => {
 export const getAuthor = async (request: Request, response: Response) => {
   const { id } = request.params;
   try {
-    const author = await authorModel.getAuthorById(new Types.ObjectId(id));
+    const author = await authorModel.getAuthorById(id);
     if (author) {
       APIResponse(response, author, "Author found");
     } else {
@@ -45,9 +44,7 @@ export const createAuthor = async (request: Request, response: Response) => {
 export const deleteAuthor = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    const deletedAuthor = await authorModel.deleteAuthor(
-      new Types.ObjectId(id)
-    );
+    const deletedAuthor = await authorModel.deleteAuthor(id);
     if (deletedAuthor) {
       APIResponse(response, null, "Author deleted", 204);
     } else APIResponse(response, null, "Author not found", 404);
@@ -60,10 +57,7 @@ export const deleteAuthor = async (request: Request, response: Response) => {
 export const updateAuthor = async (request: Request, response: Response) => {
   try {
     const { id } = request.params;
-    const updatedAuthor = await authorModel.updateAuthor(
-      new Types.ObjectId(id),
-      request.body
-    );
+    const updatedAuthor = await authorModel.updateAuthor(id, request.body);
     if (updatedAuthor) {
       APIResponse(response, updatedAuthor, "Author updated", 200);
     } else {

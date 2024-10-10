@@ -2,7 +2,13 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../config/env";
 
-import { APIResponse, generateAccessToken, generateRefreshToken, hashPassword, verifyPassword } from "../utils";
+import {
+  APIResponse,
+  generateAccessToken,
+  generateRefreshToken,
+  hashPassword,
+  verifyPassword,
+} from "../utils";
 import { userValidation } from "../validation/users";
 import { z } from "zod";
 import { addUser, findByCredentials } from "../models";
@@ -28,7 +34,7 @@ export const register = async (request: Request, response: Response) => {
         500
       );
 
-    return APIResponse(response, newUser._id, "Vous êtes inscrit", 200);
+    return APIResponse(response, newUser.id, "Vous êtes inscrit", 200);
   } catch (err) {
     if (err instanceof z.ZodError) {
       // ici on retourne les erreurs de validation

@@ -1,67 +1,117 @@
-import { Types } from "mongoose";
-import { IEvent } from "../types/IEvent";
-import Event from "../schema/events";
+import { db } from "../config/pool";
+import logger from "../utils/logger";
+import { eq } from "drizzle-orm";
+import { Event, NewEvent } from "../entities/Event";
+import { events, authors } from "../schema";
 
-export const getAllEvents = () => {
+export const getAllEvents = async () => {
   try {
-    return Event.find().exec();
-  } catch (err) {
-    console.error(err);
-    return [];
+    return db
+      .select({
+        id: events.id,
+        name: events.name,
+        address: events.address,
+        date: events.date,
+        author: {
+          name: authors.id,
+        },
+      })
+      .from(events)
+      .leftJoin(authors, eq(events.authorId, authors.id))
+      .execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la récupération des évènements: ${err.message}`
+    );
+    return;
   }
 };
 
-export const getEventById = (id: Types.ObjectId) => {
+export const getEventById = async (id: string) => {
   try {
-    const event = Event.findById(id).exec();
-    return event;
-  } catch (err) {
-    console.error(err);
+    return db
+      .select({
+        id: events.id,
+        name: events.name,
+        address: events.address,
+        date: events.date,
+        author: {
+          name: authors.id,
+        },
+      })
+      .from(events)
+      .leftJoin(authors, eq(events.authorId, authors.id))
+      .where(eq(events.id, id))
+      .execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la récupération de l'évènement: ${err.message}`
+    );
     return null;
   }
 };
 
-export const addEvent = (event: IEvent) => {
+export const addEvent = (event: NewEvent) => {
   try {
-    return Event.create(event);
-  } catch (err) {
-    console.error(err);
+    return db.insert(events).values(event).returning().execute();
+  } catch (err: any) {
+    logger.error(`Erreur lors de la création de l'évènement: ${err.message}`);
     return null;
   }
 };
 
-export const updateEvent = (id: Types.ObjectId, event: IEvent) => {
+export const updateEvent = async (id: string, event: Partial<Event>) => {
   try {
-    return Event.updateOne({ _id: id }, event).exec();
-  } catch (err) {
-    console.error(err);
+    return db.update(events).set(event).where(eq(events.id, id)).execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la mise à jour de l'évènement: ${err.message}`
+    );
     return null;
   }
 };
 
-export const deleteEvent = (id: Types.ObjectId) => {
+export const deleteEvent = async (id: string) => {
   try {
-    return Event.deleteOne(id).exec();
-  } catch (err) {
-    console.error(err);
+    return db.delete(events).where(eq(events.id, id)).execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la suppression de l'évènement: ${err.message}`
+    );
     return null;
   }
 };
 
-export const deleteEventsByAuthorId = (authorId: Types.ObjectId) => {
+export const deleteEventsByAuthorId = async (authorId: string) => {
   try {
-    return Event.deleteOne({ author: authorId }).exec();
-  } catch (err) {
-    console.error(err);
+    return db.delete(events).where(eq(events.authorId, authorId)).execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la suppression de l'évènement par id d'auteur: ${err.message}`
+    );
     return null;
   }
 };
 
-export const getEventsByAuthorId = (authorId: Types.ObjectId) => {
+export const getEventsByAuthorId = async (authorId: string) => {
   try {
-    return Event.find({ author: authorId }).exec();
-  } catch (err) {
-    console.error(err);
+    return db
+      .select({
+        id: events.id,
+        name: events.name,
+        address: events.address,
+        date: events.date,
+        author: {
+          name: authors.id,
+        },
+      })
+      .from(events)
+      .where(eq(events.authorId, authorId))
+      .execute();
+  } catch (err: any) {
+    logger.error(
+      `Erreur lors de la récupération des l'évènement par auteur: ${err.message}`
+    );
     return null;
   }
 };
