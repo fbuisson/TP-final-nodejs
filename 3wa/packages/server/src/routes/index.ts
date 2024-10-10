@@ -5,6 +5,7 @@ import eventRoutes from "./eventRoutes";
 import genreRoutes from "./genreRoutes";
 import userRoutes from "./userRoutes";
 import authentificationRoutes from "./authentificationRoutes";
+import imageRoutes from "./imageRoutes";
 
 const router = Router();
 
@@ -25,5 +26,8 @@ router.use("/users", userRoutes);
 
 // http://localhost:3000/authentification
 router.use("/authentification", authentificationRoutes);
+
+// http://localhost:3000/images
+router.use("/images", imageRoutes);
 
 export default router;
