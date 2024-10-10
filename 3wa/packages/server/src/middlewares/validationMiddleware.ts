@@ -37,7 +37,7 @@ const bookSchema = z.object({
   genres_id: z
     .array(z.string())
     .nonempty("genres_id must be an array of strings or empty"),
-  author_id: z.string().min(1, "Author_id must be a non-empty string"),
+  authorId: z.string().min(1, "authorId must be a non-empty string"),
 });
 
 export const validateBook = (
@@ -96,7 +96,7 @@ const eventSchema = z.object({
   date: z.string().refine((date) => !isNaN(Date.parse(date)), {
     message: "Date must be a valid ISO 8601 date string",
   }),
-  author_id: z.string().min(1, "Author ID must be a non-empty string"),
+  authorId: z.string().min(1, "authorId ID must be a non-empty string"),
 });
 
 export const validateEvent = (
