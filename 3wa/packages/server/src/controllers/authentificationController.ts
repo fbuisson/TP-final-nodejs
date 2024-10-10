@@ -13,7 +13,7 @@ import { userValidation } from "../validation/users";
 import { z } from "zod";
 import { addUser, findByCredentials } from "../models";
 
-const { JWT_SECRET, NODE_ENV } = env;
+const { NODE_ENV } = env;
 
 export const register = async (request: Request, response: Response) => {
   try {

@@ -5,6 +5,8 @@ import cors from "cors";
 import { env } from "./config/env";
 import cookieParser from "cookie-parser";
 import { refreshTokenMiddleware } from "./middlewares/refreshTokenMiddleware";
+import http from "http";
+import { initializeSocketServer } from "./sockets/server";
 
 // Je définis mon port (3000)
 const { PORT, ORIGIN } = env;
@@ -12,6 +14,9 @@ const { PORT, ORIGIN } = env;
 // J'instancie/j'initialise mon serveur express (dans la variable app)
 const app = express();
 app.use(cookieParser());
+const server = http.createServer(app);
+
+initializeSocketServer(server);
 
 app.use(
   cors({
@@ -50,5 +55,9 @@ if (require.main === module) {
     console.log(`Server is running on http://localhost:${PORT}`);
   });
 }
+
+// server.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
 
 export default app;

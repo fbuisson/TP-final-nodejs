@@ -11,7 +11,7 @@ import {
 } from "../utils";
 import { getUserById, updateUser } from "../models";
 
-const { JWT_SECRET, NODE_ENV } = env;
+const { ACCESS_TOKEN_SECRET, NODE_ENV } = env;
 
 export const refreshTokenMiddleware = async (
   req: Request,
@@ -30,7 +30,7 @@ export const refreshTokenMiddleware = async (
 
   try {
     // Vérification de la validité du token d'accès
-    jwt.verify(accessToken, JWT_SECRET);
+    jwt.verify(accessToken, ACCESS_TOKEN_SECRET);
     return next(); // Si le token d'accès est valide, passer au middleware suivant
   } catch (error) {
     // Si le token d'accès a expiré, on vérifie le Refresh Token
