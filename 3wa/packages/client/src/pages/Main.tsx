@@ -123,7 +123,7 @@ const Main: React.FC = () => {
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
             <div className="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-              NEW: Drizlle & postgres migration.{' '}
+              NEW: Drizzle & postgres migration.{' '}
             </div>
           </div>
           <div className="text-center">
