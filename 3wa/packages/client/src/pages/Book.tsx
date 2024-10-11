@@ -12,7 +12,6 @@ const BookPage = () => {
     fetch("http://localhost:3000/books")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setBooks(data.data);
       })
       .catch((err) => {
@@ -24,7 +23,6 @@ const BookPage = () => {
     fetch("http://localhost:3000/authors")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAuthors(data.data);
       })
       .catch((err) => {

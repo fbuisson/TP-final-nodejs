@@ -10,7 +10,6 @@ const AuthorPage = () => {
     fetch("http://localhost:3000/authors")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAuthors(data.data);
       })
       .catch((err) => {

@@ -11,7 +11,6 @@ const Genre: React.FC = () => {
     fetch("http://localhost:3000/genres")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setGenres(data.data);
       })
       .catch((err) => {

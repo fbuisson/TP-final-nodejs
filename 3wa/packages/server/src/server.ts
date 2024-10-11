@@ -41,7 +41,6 @@ app.use(routes);
 // Definit une route pour les requêtes de la méthode GET sur l'url /
 // [GET] http://localhost:3000/
 app.get("/", (req: Request, res: Response) => {
-  console.log("Arrivé au controller");
   res.status(200).send("Page d'accueil !");
 });
 

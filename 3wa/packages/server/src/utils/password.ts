@@ -10,8 +10,6 @@ export async function hashPassword(password: string): Promise<string | void> {
       parallelism: 1,
       salt: Buffer.from("SuperSaltGentil"),
     });
-
-    console.log("Mot de passe hashé: ", hash);
     return hash;
   } catch (err) {
     console.error("Erreur de hashage: ", err);
